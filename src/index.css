@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    background-color: #ffffff;
+    color: #111827;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+  }
+
+  /* Custom brand gradients matching Digeetro */
+  :root {
+    --brand-purple: #5c24e5;
+    --brand-pink: #e02888;
+    --brand-orange: #ff6a3d;
+    --brand-cyan: #00b4d8;
+  }
+}
+
+/* Pencil sketch noise / graphite aesthetic */
+.pencil-filter {
+  filter: url(#pencil-texture);
+}
+
+/* Light sweep effect */
+@keyframes lightSweep {
+  0% {
+    transform: translateX(-150%) skewX(-25deg);
+  }
+  100% {
+    transform: translateX(250%) skewX(-25deg);
+  }
+}
+
+.animate-light-sweep {
+  animation: lightSweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Text gradient matching Digeetro */
+.digeetro-gradient-text {
+  background: linear-gradient(135deg, #5C24E5 0%, #B829A0 40%, #E02888 70%, #FF6A3D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Smooth circular shockwave pulse */
+@keyframes shockwavePulse {
+  0% {
+    transform: scale(0.1);
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(3.5);
+    opacity: 0;
+  }
+}
+
+.shockwave-anim {
+  animation: shockwavePulse 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
