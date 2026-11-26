@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "DIGEETRO DIGITAL SOLUTIONS - Pure Standalone React Experience",
   "scripts": {
-    "start": "npx serve ."
+    "dev": "node server.js",
+    "start": "node server.js"
   },
   "dependencies": {
     "react": "^18.3.1",

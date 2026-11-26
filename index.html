@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/jpeg" href="assets/digeetro-logo.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DIGEETRO DIGITAL SOLUTIONS | Premium Cinematic Experience</title>
+    <title>DIGEETRO DIGITAL SOLUTIONS | Coimbatore Digital Growth Studio</title>
 
     <!-- Google Fonts: Instrument Serif, Outfit, Plus Jakarta Sans, Playfair Display -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -22,10 +22,14 @@
           extend: {
             fontFamily: {
               sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-              serif: ['"Instrument Serif"', 'serif'],
+              serif: ['"Instrument Serif"', '"Playfair Display"', 'serif'],
               outfit: ['"Outfit"', 'sans-serif'],
+              caveat: ['"Caveat"', 'cursive'],
             },
             colors: {
+              limeAccent: '#84cc16',
+              limeBright: '#a3e635',
+              limeDark: '#4d7c0f',
               brandPurple: '#5C24E5',
               brandPink: '#E02888',
               brandOrange: '#FF6A3D',
@@ -60,6 +64,7 @@
         width: 100%;
         min-height: 100%;
         overflow-x: clip;
+        scroll-behavior: smooth;
       }
 
       /* Custom Brand Gradient Text */
@@ -70,1128 +75,258 @@
         background-clip: text;
       }
 
-      /* Light Sweep Shimmer */
-      @keyframes lightSweep {
-        0% { transform: translateX(-150%) skewX(-25deg); }
-        100% { transform: translateX(250%) skewX(-25deg); }
+      /* Subtle marquee loop */
+      @keyframes marqueeTrack {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-50%); }
       }
-      .animate-light-sweep {
-        animation: lightSweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      .animate-marquee {
+        display: flex;
+        width: max-content;
+        animation: marqueeTrack 28s linear infinite;
+      }
+      .animate-marquee:hover {
+        animation-play-state: paused;
       }
 
-      /* Circular Shockwave Pulse */
-      @keyframes shockwavePulse {
-        0% { transform: scale(0.1); opacity: 0.9; }
-        50% { opacity: 0.6; }
-        100% { transform: scale(3.5); opacity: 0; }
-      }
-      .shockwave-anim {
-        animation: shockwavePulse 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
-      }
+
     </style>
   </head>
   <body class="bg-white text-neutral-900 selection:bg-purple-100 selection:text-purple-900">
     <div id="root"></div>
 
-    <!-- PURE REACT APPLICATION - RUNS DIRECTLY WITHOUT VITE -->
+    <!-- PURE REACT APPLICATION -->
     <script type="text/babel">
       const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
+      // --- ICONS ---
+      const IconArrowRight = ({ className = "w-4 h-4" }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      );
+
+      const IconCheck = ({ className = "w-4 h-4" }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      );
+
+      const IconStar = ({ className = "w-4 h-4" }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+      );
+
+      const IconPhone = ({ className = "w-4 h-4" }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+      );
+
+      const IconMapPin = ({ className = "w-4 h-4" }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+      );
+
+      const IconUsers = ({ className = "w-4 h-4" }) => (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      );
+
+
       // Brand color palette
       const BRAND_COLORS = [
-        '#5C24E5', // Deep Purple
-        '#8B3EE8', // Electric Purple
-        '#E02888', // Magenta Pink
-        '#FF2E93', // Neon Pink
-        '#FF6A3D', // Sunset Orange
-        '#FF8C42', // Warm Orange
-        '#00B4D8', // Cyan (from logo pixels)
+        '#5C24E5', '#8B3EE8', '#E02888', '#FF2E93', '#FF6A3D', '#FF8C42', '#00B4D8'
       ];
 
-      // --- PROCEDURAL WEB AUDIO SYNTHESIS ---
-      let audioCtx = null;
-      let isMuted = true;
+      
+      // --- ANIMATED NUMBER COUNTER ---
+      function AnimatedCounter({ end = 100, duration = 1800, suffix = '+' }) {
+        const [count, setCount] = useState(0);
 
-      function getAudioContext() {
-        if (!audioCtx && typeof window !== 'undefined') {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) audioCtx = new AudioContext();
-        }
-        if (audioCtx && audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
-        return audioCtx;
+        useEffect(() => {
+          let startTimestamp = null;
+          let animId;
+
+          const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            // Ease-out cubic curve: fast start, soft landing
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.floor(easeOut * end));
+
+            if (progress < 1) {
+              animId = requestAnimationFrame(step);
+            } else {
+              setCount(end);
+            }
+          };
+
+          animId = requestAnimationFrame(step);
+          return () => cancelAnimationFrame(animId);
+        }, [end, duration]);
+
+        return <span>{count}{suffix}</span>;
       }
 
-      const soundManager = {
-        playWhoosh(pitch = 1) {
-          if (isMuted) return;
-          const ctx = getAudioContext();
-          if (!ctx) return;
-          try {
-            const now = ctx.currentTime;
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            const filter = ctx.createBiquadFilter();
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(120 * pitch, now);
-            osc.frequency.exponentialRampToValueAtTime(380 * pitch, now + 0.25);
-            osc.frequency.exponentialRampToValueAtTime(80, now + 0.6);
-
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(600, now);
-            filter.frequency.exponentialRampToValueAtTime(1400, now + 0.3);
-
-            gain.gain.setValueAtTime(0.001, now);
-            gain.gain.linearRampToValueAtTime(0.12, now + 0.2);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start(now);
-            osc.stop(now + 0.65);
-          } catch (e) {}
-        },
-
-        playHandshakeImpact() {
-          if (isMuted) return;
-          const ctx = getAudioContext();
-          if (!ctx) return;
-          try {
-            const now = ctx.currentTime;
-            // Sub bass impact
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(160, now);
-            osc.frequency.exponentialRampToValueAtTime(45, now + 0.35);
-
-            gain.gain.setValueAtTime(0.3, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start(now);
-            osc.stop(now + 0.5);
-
-            // High sparkle chime
-            const chime = ctx.createOscillator();
-            const chimeGain = ctx.createGain();
-            chime.type = 'sine';
-            chime.frequency.setValueAtTime(1200, now);
-            chime.frequency.exponentialRampToValueAtTime(2400, now + 0.15);
-            chimeGain.gain.setValueAtTime(0.08, now);
-            chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-
-            chime.connect(chimeGain);
-            chimeGain.connect(ctx.destination);
-            chime.start(now);
-            chime.stop(now + 0.35);
-          } catch (e) {}
-        },
-
-        playWelcomeChord() {
-          if (isMuted) return;
-          const ctx = getAudioContext();
-          if (!ctx) return;
-          try {
-            const now = ctx.currentTime;
-            const freqs = [392.00, 493.88, 587.33, 783.99]; // G major 7th chord
-            freqs.forEach((freq, idx) => {
-              const osc = ctx.createOscillator();
-              const gain = ctx.createGain();
-              osc.type = 'sine';
-              osc.frequency.value = freq;
-              gain.gain.setValueAtTime(0.001, now);
-              gain.gain.linearRampToValueAtTime(0.04, now + 0.1 + idx * 0.05);
-              gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
-              osc.connect(gain);
-              gain.connect(ctx.destination);
-              osc.start(now + idx * 0.05);
-              osc.stop(now + 1.5);
-            });
-          } catch (e) {}
-        }
-      };
-
-      // --- INLINE SVG ICONS (Zero external dependencies) ---
-      const IconArrowDown = ({ className = "w-4 h-4" }) => (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 5v14M19 12l-7 7-7-7"/>
-        </svg>
-      );
-
-      const IconRotateCcw = ({ className = "w-4 h-4" }) => (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-          <path d="M3 3v5h5"/>
-        </svg>
-      );
-
-      const IconSparkles = ({ className = "w-4 h-4" }) => (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-        </svg>
-      );
-
-      const IconArrowUpRight = ({ className = "w-4 h-4" }) => (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M7 17 17 7M7 7h10v10"/>
-        </svg>
-      );
-
-      const IconPlay = ({ className = "w-4 h-4" }) => (
-        <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-          <polygon points="5 3 19 12 5 21 5 3"/>
-        </svg>
-      );
-
-      const IconCpu = ({ className = "w-6 h-6" }) => (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/>
-          <path d="M15 2v2M9 2v2M20 15h2M20 9h2M9 20v2M15 20v2M2 9h2M2 15h2"/>
-        </svg>
-      );
-
-      const IconCode = ({ className = "w-6 h-6" }) => (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-        </svg>
-      );
-
-      const IconLayers = ({ className = "w-6 h-6" }) => (
-        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="12 2 2 7 12 12 22 7 12 2"/>
-          <polyline points="2 17 12 22 22 17"/>
-          <polyline points="2 12 12 17 22 12"/>
-        </svg>
-      );
-
-      // --- COMPONENT: ParticleCanvas (60 FPS Background Particles & Shockwaves) ---
-      function ParticleCanvas({ progress = 0, onImpactTrigger }) {
-        const canvasRef = useRef(null);
-        const stateRef = useRef({
-          particles: [],
-          burstParticles: [],
-          shockwaves: [],
-          impactFlash: 0,
-          hasTriggeredHandshake: false,
-          lastProgress: 0,
-        });
-
-        useEffect(() => {
-          stateRef.current.lastProgress = progress;
-        }, [progress]);
-
-        useEffect(() => {
-          const canvas = canvasRef.current;
-          if (!canvas) return;
-          const ctx = canvas.getContext('2d');
-          if (!ctx) return;
-
-          let animationFrameId;
-          let width = (canvas.width = window.innerWidth);
-          let height = (canvas.height = window.innerHeight);
-
-          const handleResize = () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-          };
-          window.addEventListener('resize', handleResize);
-
-          // 65 ambient floating brand particles
-          const ambientCount = 65;
-          const particles = [];
-          for (let i = 0; i < ambientCount; i++) {
-            particles.push({
-              x: Math.random() * width,
-              y: Math.random() * height,
-              vx: (Math.random() - 0.5) * 0.6,
-              vy: (Math.random() - 0.5) * 0.6 - 0.15,
-              radius: Math.random() * 2.8 + 1.2,
-              color: BRAND_COLORS[Math.floor(Math.random() * BRAND_COLORS.length)],
-              alpha: Math.random() * 0.5 + 0.2,
-              pulseSpeed: Math.random() * 0.03 + 0.015,
-              pulse: Math.random() * Math.PI,
-              isCube: Math.random() > 0.65,
-              size: Math.random() * 5 + 3,
-              rotation: Math.random() * Math.PI,
-              rotationSpeed: (Math.random() - 0.5) * 0.02,
-            });
-          }
-          stateRef.current.particles = particles;
-
-          const triggerHandshakeExplosion = (originX, originY) => {
-            stateRef.current.shockwaves = [
-              { r: 8, maxR: Math.min(width, height) * 0.48, width: 4.5, color: '#E02888', alpha: 0.9, speed: 14 },
-              { r: 4, maxR: Math.min(width, height) * 0.38, width: 3.5, color: '#5C24E5', alpha: 0.85, speed: 10 },
-              { r: 2, maxR: Math.min(width, height) * 0.26, width: 2.5, color: '#FF6A3D', alpha: 0.8, speed: 7 },
-            ];
-            stateRef.current.impactFlash = 1.0;
-
-            const burst = [];
-            const burstCount = 160;
-            for (let i = 0; i < burstCount; i++) {
-              const angle = (Math.PI * 2 * i) / burstCount + (Math.random() - 0.5) * 0.3;
-              const speed = Math.random() * 14 + 3;
-              const color = BRAND_COLORS[Math.floor(Math.random() * BRAND_COLORS.length)];
-              burst.push({
-                x: originX,
-                y: originY,
-                vx: Math.cos(angle) * speed,
-                vy: Math.sin(angle) * speed,
-                radius: Math.random() * 3.5 + 1.5,
-                color,
-                alpha: 1.0,
-                decay: Math.random() * 0.012 + 0.008,
-                drag: 0.94,
-                isCube: Math.random() > 0.6,
-                size: Math.random() * 6 + 3,
-                rotation: Math.random() * Math.PI * 2,
-                rotSpeed: (Math.random() - 0.5) * 0.15,
-              });
-            }
-            stateRef.current.burstParticles = burst;
-            if (onImpactTrigger) onImpactTrigger();
-          };
-
-          const render = () => {
-            ctx.clearRect(0, 0, width, height);
-            const p = stateRef.current.lastProgress;
-            const handshakeScreenX = width * 0.5;
-            const handshakeScreenY = height * 0.53;
-
-            // Trigger handshake impact at 66% - 78%
-            if (p >= 0.66 && p <= 0.78 && !stateRef.current.hasTriggeredHandshake) {
-              stateRef.current.hasTriggeredHandshake = true;
-              triggerHandshakeExplosion(handshakeScreenX, handshakeScreenY);
-            } else if (p < 0.63) {
-              stateRef.current.hasTriggeredHandshake = false;
-            }
-
-            // Impact Flash Bloom
-            if (stateRef.current.impactFlash > 0.01) {
-              const flash = stateRef.current.impactFlash;
-              const glowGrad = ctx.createRadialGradient(
-                handshakeScreenX, handshakeScreenY, 0,
-                handshakeScreenX, handshakeScreenY, 180 * flash
-              );
-              glowGrad.addColorStop(0, `rgba(255, 255, 255, ${0.95 * flash})`);
-              glowGrad.addColorStop(0.3, `rgba(224, 40, 136, ${0.6 * flash})`);
-              glowGrad.addColorStop(0.7, `rgba(92, 36, 229, ${0.3 * flash})`);
-              glowGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
-              ctx.fillStyle = glowGrad;
-              ctx.beginPath();
-              ctx.arc(handshakeScreenX, handshakeScreenY, 180 * flash, 0, Math.PI * 2);
-              ctx.fill();
-              stateRef.current.impactFlash *= 0.88;
-            }
-
-            // Expanding Shockwaves
-            for (let i = stateRef.current.shockwaves.length - 1; i >= 0; i--) {
-              const sw = stateRef.current.shockwaves[i];
-              sw.r += sw.speed;
-              sw.alpha *= 0.94;
-              if (sw.alpha > 0.02 && sw.r < sw.maxR) {
-                ctx.save();
-                ctx.beginPath();
-                ctx.arc(handshakeScreenX, handshakeScreenY, sw.r, 0, Math.PI * 2);
-                ctx.strokeStyle = sw.color;
-                ctx.globalAlpha = sw.alpha;
-                ctx.lineWidth = sw.width;
-                ctx.stroke();
-                ctx.restore();
-              } else {
-                stateRef.current.shockwaves.splice(i, 1);
-              }
-            }
-
-            // Explosive Burst Particles
-            for (let i = stateRef.current.burstParticles.length - 1; i >= 0; i--) {
-              const b = stateRef.current.burstParticles[i];
-              b.x += b.vx;
-              b.y += b.vy;
-              b.vx *= b.drag;
-              b.vy *= b.drag;
-              b.alpha -= b.decay;
-              b.rotation += b.rotSpeed;
-
-              if (b.alpha > 0.01) {
-                ctx.save();
-                ctx.globalAlpha = b.alpha;
-                ctx.fillStyle = b.color;
-                if (b.isCube) {
-                  ctx.translate(b.x, b.y);
-                  ctx.rotate(b.rotation);
-                  ctx.fillRect(-b.size / 2, -b.size / 2, b.size, b.size);
-                } else {
-                  ctx.beginPath();
-                  ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-                  ctx.fill();
-                }
-                ctx.restore();
-              } else {
-                stateRef.current.burstParticles.splice(i, 1);
-              }
-            }
-
-            // Ambient Floating Particles
-            const particles = stateRef.current.particles;
-            for (let i = 0; i < particles.length; i++) {
-              const pt = particles[i];
-              pt.x += pt.vx;
-              pt.y += pt.vy;
-              pt.pulse += pt.pulseSpeed;
-              pt.rotation += pt.rotationSpeed;
-
-              if (pt.x < -10) pt.x = width + 10;
-              if (pt.x > width + 10) pt.x = -10;
-              if (pt.y < -10) pt.y = height + 10;
-              if (pt.y > height + 10) pt.y = -10;
-
-              const dynamicAlpha = pt.alpha * (0.65 + Math.sin(pt.pulse) * 0.35);
-              ctx.save();
-              ctx.globalAlpha = dynamicAlpha;
-              ctx.fillStyle = pt.color;
-              if (pt.isCube) {
-                ctx.translate(pt.x, pt.y);
-                ctx.rotate(pt.rotation);
-                ctx.fillRect(-pt.size / 2, -pt.size / 2, pt.size, pt.size);
-              } else {
-                ctx.beginPath();
-                ctx.arc(pt.x, pt.y, pt.radius, 0, Math.PI * 2);
-                ctx.fill();
-              }
-              ctx.restore();
-            }
-
-            animationFrameId = requestAnimationFrame(render);
-          };
-
-          animationFrameId = requestAnimationFrame(render);
-          return () => {
-            window.removeEventListener('resize', handleResize);
-            cancelAnimationFrame(animationFrameId);
-          };
-        }, [onImpactTrigger]);
-
+      // --- COMPONENT: MarqueeTicker ("VANAKKAM CBE • GET GETHU ONLINE...") ---
+      function MarqueeTicker() {
+        const text = "✦ VANAKKAM CBE ✦ GET GETHU ONLINE ✦ MADE IN COIMBATORE ✦ DIGEETRO DIGITAL SOLUTIONS ✦ ";
         return (
-          <canvas
-            ref={canvasRef}
-            className="absolute inset-0 pointer-events-none z-10 w-full h-full"
-          />
-        );
-      }
-
-      // --- COMPONENT: LogoScene (0% - 20% Reveal on Pure White) ---
-      function LogoScene({ progress = 0 }) {
-        const [isLoaded, setIsLoaded] = useState(false);
-
-        useEffect(() => {
-          const timer = setTimeout(() => setIsLoaded(true), 200);
-          return () => clearTimeout(timer);
-        }, []);
-
-        const { scrollOpacity, scale, lightSweepOffset, scrollPromptOpacity } = useMemo(() => {
-          let op = 1, sc = 0.94, sweep = -120, promptOp = 1;
-          if (progress <= 0.20) {
-            const t = progress / 0.20;
-            op = 1;
-            sc = 0.94 + t * 0.06;
-            sweep = -120 + t * 240;
-            promptOp = Math.max(0, 1 - progress * 7);
-          } else if (progress <= 0.28) {
-            const t = (progress - 0.20) / 0.08;
-            op = Math.max(0, 1 - t);
-            sc = 1.0 + t * 0.05;
-            sweep = 120;
-            promptOp = 0;
-          } else {
-            op = 0; sc = 1.05; sweep = 120; promptOp = 0;
-          }
-          return { scrollOpacity: op, scale: sc, lightSweepOffset: sweep, scrollPromptOpacity: promptOp };
-        }, [progress]);
-
-        const combinedOpacity = isLoaded ? scrollOpacity : 0;
-        if (progress > 0.30 || combinedOpacity <= 0.001) return null;
-
-        return (
-          <div
-            className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-20 select-none bg-transparent transition-opacity duration-700 ease-out"
-            style={{ opacity: combinedOpacity }}
-          >
-            <div
-              className="relative flex flex-col items-center justify-center max-w-lg w-full px-6 transition-transform duration-100 ease-out will-change-transform"
-              style={{ transform: `scale(${isLoaded ? scale : 0.88})` }}
-            >
-              <div className="absolute inset-0 -m-16 bg-gradient-to-tr from-purple-500/10 via-pink-500/10 to-orange-500/10 rounded-full blur-3xl -z-10 pointer-events-none" />
-
-              <div className="relative overflow-hidden rounded-2xl bg-white p-3 sm:p-4 shadow-sm shadow-purple-500/5">
-                <img
-                  src="assets/digeetro-logo.jpg"
-                  alt="DIGEETRO DIGITAL SOLUTIONS"
-                  className="w-68 sm:w-84 md:w-96 max-w-[85vw] h-auto object-contain"
-                />
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(105deg, transparent 20%, rgba(255,255,255,0.7) 48%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.7) 52%, transparent 80%)',
-                    transform: `translateX(${lightSweepOffset}%) skewX(-20deg)`,
-                    mixBlendMode: 'overlay',
-                  }}
-                />
-              </div>
-
-              <div
-                className="mt-6 flex items-center gap-2 text-xs font-semibold tracking-widest text-neutral-400 uppercase transition-all duration-300"
-                style={{ opacity: Math.max(0, 1 - progress * 5) }}
-              >
-                <IconSparkles className="w-3.5 h-3.5 text-purple-500" />
-                <span>Transforming Ideas into Digital Reality</span>
-                <IconSparkles className="w-3.5 h-3.5 text-pink-500" />
-              </div>
-            </div>
-
-            <div
-              className="absolute bottom-10 flex flex-col items-center gap-2 text-neutral-400 pointer-events-none transition-opacity duration-300"
-              style={{ opacity: scrollPromptOpacity }}
-            >
-              <div className="w-5 h-8 rounded-full border-2 border-neutral-300 flex items-start justify-center p-1">
-                <div className="w-1 h-2 rounded-full bg-neutral-600 animate-bounce" />
-              </div>
-              <span className="text-[11px] font-semibold tracking-[0.25em] text-neutral-500 uppercase">
-                Scroll Down to Begin
-              </span>
+          <div className="w-full bg-neutral-950 text-white py-3.5 overflow-hidden select-none border-y border-neutral-800">
+            <div className="animate-marquee font-['Outfit'] font-bold tracking-[0.25em] text-xs sm:text-sm uppercase text-neutral-300">
+              <span className="px-4">{text}</span>
+              <span className="px-4">{text}</span>
+              <span className="px-4">{text}</span>
+              <span className="px-4">{text}</span>
             </div>
           </div>
         );
       }
 
-      // --- COMPONENT: PencilStickman (Articulated Sketch Character) ---
-      function PencilStickman({ side = 'left', progress = 0, shakeIntensity = 0 }) {
-        const isLeft = side === 'left';
-        const facingDir = isLeft ? 1 : -1;
-
-        const opacity = useMemo(() => {
-          if (progress < 0.20) return 0;
-          if (progress < 0.26) return (progress - 0.20) / 0.06;
-          if (progress <= 0.80) return 1;
-          if (progress <= 0.84) return Math.max(0, 1 - (progress - 0.80) / 0.04);
-          return 0;
-        }, [progress]);
-
-        const kinematics = useMemo(() => {
-          const groundY = 490;
-          const centerMeetingX = isLeft ? 430 : 570;
-          const startX = isLeft ? -160 : 1160;
-
-          const walkStartP = 0.20;
-          const walkEndP = 0.54;
-          const settleEndP = 0.60;
-          const reachEndP = 0.66;
-          const shakeEndP = 0.78;
-
-          let posX = startX;
-          let isWalking = false;
-          let walkPhase = 0;
-
-          if (progress < walkStartP) {
-            posX = startX;
-          } else if (progress <= walkEndP) {
-            isWalking = true;
-            const t = (progress - walkStartP) / (walkEndP - walkStartP);
-            const easeT = Math.sin(t * (Math.PI / 2));
-            posX = startX + (centerMeetingX - startX) * easeT;
-            walkPhase = t * Math.PI * 8;
-          } else {
-            posX = centerMeetingX;
-          }
-
-          let bounceY = 0;
-          let bodyLean = 0;
-          let headNod = 0;
-
-          if (isWalking) {
-            bounceY = -Math.abs(Math.sin(walkPhase)) * 8;
-            bodyLean = 5 * facingDir;
-            headNod = Math.sin(walkPhase * 2) * 2;
-          } else if (progress < settleEndP) {
-            const t = (progress - walkEndP) / (settleEndP - walkEndP);
-            bodyLean = 5 * facingDir * (1 - t);
-            headNod = Math.sin(t * Math.PI) * 4;
-          } else if (progress < reachEndP) {
-            const t = (progress - settleEndP) / (reachEndP - settleEndP);
-            bodyLean = 4 * facingDir * t;
-            headNod = 2;
-          } else if (progress <= shakeEndP) {
-            const t = (progress - reachEndP) / (shakeEndP - reachEndP);
-            const shakeWave = Math.sin(t * Math.PI * 6);
-            bounceY = shakeWave * 3.5;
-            bodyLean = 4 * facingDir + shakeWave * 1.5;
-            headNod = shakeWave * 3;
-          } else {
-            bodyLean = 3 * facingDir;
-          }
-
-          const hipX = posX;
-          const hipY = groundY - 130 + bounceY;
-          const neckX = hipX + bodyLean * 3;
-          const neckY = hipY - 110;
-          const headX = neckX + bodyLean * 1.5;
-          const headY = neckY - 26 + headNod;
-
-          let legL_Angle = 0, legR_Angle = 0;
-          if (isWalking) {
-            legL_Angle = Math.sin(walkPhase) * 28;
-            legR_Angle = -Math.sin(walkPhase) * 28;
-          } else {
-            legL_Angle = -10 * facingDir;
-            legR_Angle = 10 * facingDir;
-          }
-
-          const kneeLX = hipX + Math.sin((legL_Angle * Math.PI) / 180) * 65;
-          const kneeLY = hipY + Math.cos((legL_Angle * Math.PI) / 180) * 65;
-          const footLX = kneeLX + Math.sin(((legL_Angle + 4) * Math.PI) / 180) * 65;
-          const footLY = groundY;
-
-          const kneeRX = hipX + Math.sin((legR_Angle * Math.PI) / 180) * 65;
-          const kneeRY = hipY + Math.cos((legR_Angle * Math.PI) / 180) * 65;
-          const footRX = kneeRX + Math.sin(((legR_Angle - 4) * Math.PI) / 180) * 65;
-          const footRY = groundY;
-
-          const shoulderX = neckX;
-          const shoulderY = neckY + 14;
-
-          let leftArmAngle = 0;
-          if (isWalking) {
-            leftArmAngle = -Math.sin(walkPhase) * 24;
-          } else {
-            leftArmAngle = -6 * facingDir;
-          }
-          const elbowLX = shoulderX + Math.sin((leftArmAngle * Math.PI) / 180) * 52;
-          const elbowLY = shoulderY + Math.cos((leftArmAngle * Math.PI) / 180) * 52;
-          const handLX = elbowLX + Math.sin(((leftArmAngle + 8) * Math.PI) / 180) * 48;
-          const handLY = elbowLY + Math.cos(((leftArmAngle + 8) * Math.PI) / 180) * 48;
-
-          let elbowRX, elbowRY, handRX, handRY;
-          const targetHandX = 500;
-          const targetHandY = 315;
-
-          if (isWalking) {
-            const rightArmAngle = Math.sin(walkPhase) * 24;
-            elbowRX = shoulderX + Math.sin((rightArmAngle * Math.PI) / 180) * 52;
-            elbowRY = shoulderY + Math.cos((rightArmAngle * Math.PI) / 180) * 52;
-            handRX = elbowRX + Math.sin(((rightArmAngle + 8) * Math.PI) / 180) * 48;
-            handRY = elbowRY + Math.cos(((rightArmAngle + 8) * Math.PI) / 180) * 48;
-          } else if (progress < reachEndP) {
-            const t = Math.max(0, (progress - settleEndP) / (reachEndP - settleEndP));
-            const idleArmAngle = 8 * facingDir;
-            const idleElbowX = shoulderX + Math.sin((idleArmAngle * Math.PI) / 180) * 52;
-            const idleElbowY = shoulderY + Math.cos((idleArmAngle * Math.PI) / 180) * 52;
-            const idleHandX = idleElbowX + Math.sin(((idleArmAngle + 8) * Math.PI) / 180) * 48;
-            const idleHandY = idleElbowY + Math.cos(((idleArmAngle + 8) * Math.PI) / 180) * 48;
-
-            const extendedElbowX = shoulderX + 38 * facingDir;
-            const extendedElbowY = shoulderY + 16;
-            elbowRX = idleElbowX + (extendedElbowX - idleElbowX) * t;
-            elbowRY = idleElbowY + (extendedElbowY - idleElbowY) * t;
-            handRX = idleHandX + (targetHandX - idleHandX) * t;
-            handRY = idleHandY + (targetHandY - idleHandY) * t;
-          } else if (progress <= shakeEndP) {
-            const t = (progress - reachEndP) / (shakeEndP - reachEndP);
-            const shakePhase = t * Math.PI * 6;
-            const pumpY = Math.sin(shakePhase) * 16;
-            elbowRX = shoulderX + 42 * facingDir;
-            elbowRY = shoulderY + 18 + pumpY * 0.5;
-            handRX = targetHandX;
-            handRY = targetHandY + pumpY;
-          } else {
-            elbowRX = shoulderX + 40 * facingDir;
-            elbowRY = shoulderY + 18;
-            handRX = targetHandX;
-            handRY = targetHandY;
-          }
-
-          return {
-            posX, headX, headY, neckX, neckY, hipX, hipY,
-            kneeLX, kneeLY, footLX, footLY, kneeRX, kneeRY, footRX, footRY,
-            shoulderX, shoulderY, elbowLX, elbowLY, handLX, handLY,
-            elbowRX, elbowRY, handRX, handRY,
-          };
-        }, [isLeft, facingDir, progress]);
-
-        if (opacity <= 0.001) return null;
-
-        const sketchColor = "#18181b";
-        const strokeW = 4.2;
-
-        return (
-          <g opacity={opacity} className="transition-opacity duration-150">
-            {/* Ground shadow */}
-            <ellipse
-              cx={kinematics.posX}
-              cy={492}
-              rx={32}
-              ry={6}
-              fill="#18181b"
-              opacity={0.14}
-            />
-
-            {/* Back Arm (Left) */}
-            <line x1={kinematics.shoulderX} y1={kinematics.shoulderY} x2={kinematics.elbowLX} y2={kinematics.elbowLY} stroke={sketchColor} strokeWidth={strokeW - 0.5} strokeLinecap="round" opacity={0.8} />
-            <line x1={kinematics.elbowLX} y1={kinematics.elbowLY} x2={kinematics.handLX} y2={kinematics.handLY} stroke={sketchColor} strokeWidth={strokeW - 0.5} strokeLinecap="round" opacity={0.8} />
-
-            {/* Left Leg */}
-            <line x1={kinematics.hipX} y1={kinematics.hipY} x2={kinematics.kneeLX} y2={kinematics.kneeLY} stroke={sketchColor} strokeWidth={strokeW} strokeLinecap="round" />
-            <line x1={kinematics.kneeLX} y1={kinematics.kneeLY} x2={kinematics.footLX} y2={kinematics.footLY} stroke={sketchColor} strokeWidth={strokeW} strokeLinecap="round" />
-            <line x1={kinematics.footLX} y1={kinematics.footLY} x2={kinematics.footLX + 12 * facingDir} y2={kinematics.footLY} stroke={sketchColor} strokeWidth={strokeW} strokeLinecap="round" />
-
-            {/* Right Leg */}
-            <line x1={kinematics.hipX} y1={kinematics.hipY} x2={kinematics.kneeRX} y2={kinematics.kneeRY} stroke={sketchColor} strokeWidth={strokeW} strokeLinecap="round" />
-            <line x1={kinematics.kneeRX} y1={kinematics.kneeRY} x2={kinematics.footRX} y2={kinematics.footRY} stroke={sketchColor} strokeWidth={strokeW} strokeLinecap="round" />
-            <line x1={kinematics.footRX} y1={kinematics.footRY} x2={kinematics.footRX + 12 * facingDir} y2={kinematics.footRY} stroke={sketchColor} strokeWidth={strokeW} strokeLinecap="round" />
-
-            {/* Spine */}
-            <line x1={kinematics.neckX} y1={kinematics.neckY} x2={kinematics.hipX} y2={kinematics.hipY} stroke={sketchColor} strokeWidth={strokeW + 0.6} strokeLinecap="round" />
-
-            {/* Head */}
-            <circle cx={kinematics.headX} cy={kinematics.headY} r={22} fill="#ffffff" stroke={sketchColor} strokeWidth={strokeW} />
-            {/* Eye facing center */}
-            <circle cx={kinematics.headX + 9 * facingDir} cy={kinematics.headY - 2} r={2.5} fill={sketchColor} />
-            {/* Friendly smile */}
-            <path
-              d={`M ${kinematics.headX + 4 * facingDir} ${kinematics.headY + 7} Q ${kinematics.headX + 9 * facingDir} ${kinematics.headY + 11} ${kinematics.headX + 14 * facingDir} ${kinematics.headY + 6}`}
-              fill="none"
-              stroke={sketchColor}
-              strokeWidth={2.4}
-              strokeLinecap="round"
-            />
-
-            {/* Front Arm (Right - Handshake arm) */}
-            <line x1={kinematics.shoulderX} y1={kinematics.shoulderY} x2={kinematics.elbowRX} y2={kinematics.elbowRY} stroke={sketchColor} strokeWidth={strokeW} strokeLinecap="round" />
-            <line x1={kinematics.elbowRX} y1={kinematics.elbowRY} x2={kinematics.handRX} y2={kinematics.handRY} stroke={sketchColor} strokeWidth={strokeW} strokeLinecap="round" />
-            <circle cx={kinematics.handRX} cy={kinematics.handRY} r={3.5} fill={sketchColor} />
-          </g>
-        );
-      }
-
-      // --- COMPONENT: HandshakeScene (60% - 80% Handshake Clasp & Energy Rays) ---
-      function HandshakeScene({ progress = 0, cameraShake = { x: 0, y: 0 } }) {
-        const reachEndP = 0.66;
-        const shakeEndP = 0.78;
-        const isHandshakeActive = progress >= reachEndP && progress <= 0.80;
-
-        const stageOpacity = useMemo(() => {
-          if (progress < 0.20) return 0;
-          if (progress < 0.26) return (progress - 0.20) / 0.06;
-          if (progress <= 0.80) return 1;
-          if (progress <= 0.84) return Math.max(0, 1 - (progress - 0.80) / 0.04);
-          return 0;
-        }, [progress]);
-
-        const shakeIntensity = useMemo(() => {
-          if (progress < reachEndP || progress > 0.80) return 0;
-          if (progress <= shakeEndP) {
-            const t = (progress - reachEndP) / (shakeEndP - reachEndP);
-            return Math.sin(t * Math.PI);
-          }
-          return Math.max(0, 1 - (progress - shakeEndP) / 0.02);
-        }, [progress, reachEndP, shakeEndP]);
-
-        const pumpOffset = useMemo(() => {
-          if (progress >= reachEndP && progress <= shakeEndP) {
-            const shakePhase = ((progress - reachEndP) / (shakeEndP - reachEndP)) * Math.PI * 6;
-            return Math.sin(shakePhase) * 16;
-          }
-          return 0;
-        }, [progress, reachEndP, shakeEndP]);
-
-        const energyRays = useMemo(() => {
-          if (!isHandshakeActive) return [];
-          const count = 14;
-          const rays = [];
-          const centerX = 500;
-          const centerY = 315 + pumpOffset;
-          for (let i = 0; i < count; i++) {
-            const angle = (i / count) * Math.PI * 2 + (progress * 6);
-            const innerR = 30 + Math.sin(i * 3 + progress * 20) * 8;
-            const length = 24 + Math.cos(i * 2) * 12 + shakeIntensity * 18;
-            rays.push({
-              x1: centerX + Math.cos(angle) * innerR,
-              y1: centerY + Math.sin(angle) * innerR,
-              x2: centerX + Math.cos(angle) * (innerR + length),
-              y2: centerY + Math.sin(angle) * (innerR + length),
-              opacity: 0.35 + Math.sin(i + progress * 30) * 0.4,
-            });
-          }
-          return rays;
-        }, [isHandshakeActive, progress, pumpOffset, shakeIntensity]);
-
-        if (progress < 0.18 || progress > 0.86 || stageOpacity <= 0.001) return null;
-
-        return (
-          <div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none transition-transform duration-75 select-none"
-            style={{
-              transform: `translate3d(${cameraShake.x}px, ${cameraShake.y}px, 0)`,
-              opacity: stageOpacity,
-            }}
-          >
-            <svg
-              viewBox="0 0 1000 600"
-              className="w-full h-full max-w-6xl max-h-[85vh] overflow-visible"
-              preserveAspectRatio="xMidYMid meet"
-            >
-              <defs>
-                <filter id="pencil-texture" x="-10%" y="-10%" width="120%" height="120%">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="noise" />
-                  <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.0" xChannelSelector="R" yChannelSelector="G" />
-                </filter>
-              </defs>
-
-              {/* Minimalist sketchy ground line */}
-              <g opacity={stageOpacity * 0.85}>
-                <path d="M 40 490 Q 250 491 500 489.5 T 960 490" fill="none" stroke="#1c1917" strokeWidth="2.2" strokeLinecap="round" opacity="0.25" />
-                <path d="M 120 492 L 280 492 M 420 491.5 L 580 491.5 M 720 492 L 880 492" fill="none" stroke="#1c1917" strokeWidth="1.2" strokeLinecap="round" opacity="0.12" />
-              </g>
-
-              {/* The Two Pencil Stickmen */}
-              <g filter="url(#pencil-texture)">
-                <PencilStickman side="left" progress={progress} shakeIntensity={shakeIntensity} />
-                <PencilStickman side="right" progress={progress} shakeIntensity={shakeIntensity} />
-              </g>
-
-              {/* Clasped Hands Joint */}
-              {progress >= reachEndP && progress <= 0.84 && (
-                <g
-                  transform={`translate(500, ${315 + pumpOffset})`}
-                  opacity={progress <= 0.80 ? 1 : Math.max(0, 1 - (progress - 0.80) / 0.04)}
-                >
-                  <ellipse cx="0" cy="0" rx="9" ry="7" fill="#18181b" />
-                  <path d="M -6 -5 Q 0 -8 6 -4 M -7 0 Q 0 -3 7 1 M -6 4 Q 0 1 6 5" fill="none" stroke="#ffffff" strokeWidth="1.4" strokeLinecap="round" opacity="0.85" />
-                  <path d="M -8 -3 Q -4 6 5 4" fill="none" stroke="#18181b" strokeWidth="2.4" strokeLinecap="round" />
-                </g>
-              )}
-
-              {/* Sketchy pencil energy rays around handshake */}
-              {isHandshakeActive && (
-                <g>
-                  {energyRays.map((r, i) => (
-                    <line key={`ray-${i}`} x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} stroke="#18181b" strokeWidth={1.8 + (i % 2) * 0.8} strokeLinecap="round" opacity={r.opacity * shakeIntensity} />
-                  ))}
-                  <path d={`M 470 ${315 + pumpOffset - 25} A 35 35 0 0 1 530 ${315 + pumpOffset - 25}`} fill="none" stroke="#18181b" strokeWidth="1.6" strokeDasharray="4 4" opacity={0.4 * shakeIntensity} />
-                  <path d={`M 465 ${315 + pumpOffset + 28} A 40 40 0 0 0 535 ${315 + pumpOffset + 28}`} fill="none" stroke="#18181b" strokeWidth="1.6" strokeDasharray="5 3" opacity={0.35 * shakeIntensity} />
-                </g>
-              )}
-            </svg>
-          </div>
-        );
-      }
-
-      // --- COMPONENT: WelcomeScene (80% - 100% Final Reveal) ---
-      function WelcomeScene({ progress = 0, onReplay, onExploreServices }) {
-        const isVisible = progress >= 0.78;
-
-        const revealProgress = useMemo(() => {
-          if (progress < 0.78) return 0;
-          return Math.min(1, (progress - 0.78) / 0.08);
-        }, [progress]);
-
-        const wordWelcome = 'WELCOME TO'.split('');
-        const wordDigeetro = 'DIGEETRO'.split('');
-        const wordSolutions = 'DIGITAL SOLUTIONS'.split('');
-
-        const lightSweep = useMemo(() => {
-          if (progress < 0.82) return -120;
-          const t = Math.min(1, (progress - 0.82) / 0.15);
-          return -120 + t * 260;
-        }, [progress]);
-
-        if (!isVisible || revealProgress <= 0.01) return null;
-
-        return (
-          <div
-            className="absolute inset-0 flex flex-col items-center justify-center pointer-events-auto z-30 px-4 text-center select-none bg-white/95 backdrop-blur-xs transition-opacity duration-300"
-            style={{ opacity: Math.min(1, revealProgress * 1.3) }}
-          >
-            {/* Background ambient brand glow */}
-            <div
-              className="absolute w-[750px] h-[750px] rounded-full blur-[140px] pointer-events-none -z-10"
-              style={{
-                background: 'radial-gradient(circle, rgba(224,40,136,0.18) 0%, rgba(92,36,229,0.12) 50%, rgba(255,106,61,0.08) 80%, transparent 100%)',
-                opacity: revealProgress,
-                transform: `scale(${0.9 + revealProgress * 0.2})`,
-              }}
-            />
-
-            {/* Original Brand Logo Badge */}
-            <div
-              className="mb-4 sm:mb-6 flex items-center justify-center will-change-transform transition-all duration-300"
-              style={{
-                opacity: Math.min(1, revealProgress * 1.5),
-                transform: `translateY(${(1 - revealProgress) * 20}px) scale(${0.92 + revealProgress * 0.08})`,
-              }}
-            >
-              <div className="p-2.5 sm:p-3 rounded-2xl bg-white shadow-xl shadow-purple-500/10 border border-neutral-200/80 flex items-center gap-3">
-                <img
-                  src="assets/digeetro-logo.jpg"
-                  alt="DIGEETRO Logo Icon"
-                  className="w-12 sm:w-16 h-auto object-contain rounded-lg"
-                />
-                <div className="text-left pr-2 sm:pr-4">
-                  <span className="block text-[10px] font-bold tracking-widest text-purple-600 uppercase">
-                    Brand Identity
-                  </span>
-                  <span className="text-xs sm:text-sm font-bold text-neutral-900 tracking-tight">
-                    DIGEETRO DIGITAL SOLUTIONS
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Exact Required Typography */}
-            <div className="relative max-w-4xl mx-auto flex flex-col items-center">
-              {/* LINE 1: WELCOME TO - Elegant black typography */}
-              <div className="overflow-hidden py-1 mb-1">
-                <h2 className="text-base sm:text-xl md:text-2xl font-bold tracking-[0.35em] text-neutral-900 uppercase flex flex-wrap justify-center items-center">
-                  {wordWelcome.map((char, idx) => {
-                    const charDelay = idx * 0.015;
-                    const charProgress = Math.max(0, Math.min(1, (revealProgress - charDelay) / 0.5));
-                    return (
-                      <span
-                        key={`welcome-${idx}`}
-                        className="inline-block transition-all duration-200 will-change-transform"
-                        style={{
-                          opacity: charProgress,
-                          transform: `translate3d(0, ${(1 - charProgress) * 18}px, 0)`,
-                          width: char === ' ' ? '0.6em' : 'auto',
-                        }}
-                      >
-                        {char}
-                      </span>
-                    );
-                  })}
-                </h2>
-              </div>
-
-              {/* LINE 2: DIGEETRO - Original Brand Gradient Colors & Light Sweep */}
-              <div className="relative overflow-hidden py-2 my-1">
-                <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight leading-none flex justify-center items-center font-['Outfit']">
-                  {wordDigeetro.map((char, idx) => {
-                    const charDelay = idx * 0.02;
-                    const charProgress = Math.max(0, Math.min(1, (revealProgress - 0.1 - charDelay) / 0.5));
-                    return (
-                      <span
-                        key={`digeetro-${idx}`}
-                        className="inline-block digeetro-gradient-text drop-shadow-sm transition-all duration-200 will-change-transform"
-                        style={{
-                          opacity: charProgress,
-                          transform: `translate3d(0, ${(1 - charProgress) * 26}px, 0) scale(${0.92 + charProgress * 0.08})`,
-                        }}
-                      >
-                        {char}
-                      </span>
-                    );
-                  })}
-                </h1>
-
-                {/* Light Sweep Across DIGEETRO */}
-                <div
-                  className="absolute inset-0 pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(110deg, transparent 20%, rgba(255,255,255,0.7) 48%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.7) 52%, transparent 80%)',
-                    transform: `translateX(${lightSweep}%) skewX(-25deg)`,
-                    mixBlendMode: 'overlay',
-                  }}
-                />
-              </div>
-
-              {/* LINE 3: DIGITAL SOLUTIONS - Clean professional typography */}
-              <div className="overflow-hidden py-1 mt-1 mb-5">
-                <h3 className="text-xs sm:text-base md:text-xl font-semibold tracking-[0.45em] text-neutral-700 uppercase flex flex-wrap justify-center items-center">
-                  {wordSolutions.map((char, idx) => {
-                    const charDelay = idx * 0.015;
-                    const charProgress = Math.max(0, Math.min(1, (revealProgress - 0.2 - charDelay) / 0.5));
-                    return (
-                      <span
-                        key={`solutions-${idx}`}
-                        className="inline-block transition-all duration-200 will-change-transform"
-                        style={{
-                          opacity: charProgress,
-                          transform: `translate3d(0, ${(1 - charProgress) * 16}px, 0)`,
-                          width: char === ' ' ? '0.7em' : 'auto',
-                        }}
-                      >
-                        {char}
-                      </span>
-                    );
-                  })}
-                </h3>
-              </div>
-
-              {/* Brand Value Statement */}
-              <p
-                className="max-w-xl mx-auto text-xs sm:text-sm md:text-base text-neutral-600 font-normal leading-relaxed mb-6 sm:mb-8 transition-all duration-300"
-                style={{
-                  opacity: Math.max(0, (revealProgress - 0.3) * 1.5),
-                  transform: `translateY(${(1 - Math.max(0, (revealProgress - 0.3) * 1.5)) * 12}px)`,
-                }}
-              >
-                Forged through partnership, trust, and creative excellence. We engineer premium digital solutions that accelerate business growth and captivate modern audiences.
-              </p>
-
-              {/* Action Buttons */}
-              <div
-                className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 transition-all duration-300"
-                style={{
-                  opacity: Math.max(0, (revealProgress - 0.4) * 1.7),
-                  transform: `translateY(${(1 - Math.max(0, (revealProgress - 0.4) * 1.7)) * 14}px)`,
-                }}
-              >
-                <button
-                  onClick={onExploreServices}
-                  className="group relative inline-flex items-center gap-2.5 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full bg-neutral-900 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-neutral-900/15 hover:bg-neutral-800 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-                >
-                  <span>Explore Our Capabilities</span>
-                  <IconArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform text-pink-400" />
-                </button>
-
-                <button
-                  onClick={onReplay}
-                  className="inline-flex items-center gap-2 px-5 py-3 sm:py-3.5 rounded-full bg-white border border-neutral-200 text-neutral-700 hover:text-neutral-900 hover:border-neutral-300 text-xs sm:text-sm font-medium transition-all hover:scale-105 active:scale-95 shadow-sm cursor-pointer"
-                >
-                  <IconRotateCcw className="w-4 h-4 text-purple-600" />
-                  <span>Replay Animation</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      }
-
-      // --- COMPONENT: DigeetroHero (Mindly-Style Hero Landing Section) ---
+      // --- COMPONENT: DigeetroHero (Mindly & Clean SaaS Design with Coimbatore Studio Branding) ---
       function DigeetroHero({ onWatchOpeningStory }) {
-        const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-        const handleMouseMove = (e) => {
-          const rect = e.currentTarget.getBoundingClientRect();
-          const x = (e.clientX - rect.left) / rect.width - 0.5;
-          const y = (e.clientY - rect.top) / rect.height - 0.5;
-          setMousePos({ x, y });
-        };
-
-        const handleMouseLeave = () => setMousePos({ x: 0, y: 0 });
-
         return (
-          <div className="min-h-screen bg-[#f4f4f7] py-8 sm:py-12 px-3 sm:px-6 md:px-10 flex items-center justify-center font-['Plus_Jakarta_Sans'] select-none">
-            <div
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              className="relative w-full max-w-7xl bg-[#fafafa] rounded-[2rem] sm:rounded-[2.75rem] border border-neutral-200/80 shadow-[0_25px_70px_-15px_rgba(92,36,229,0.12),0_10px_30px_-5px_rgba(0,0,0,0.06)] overflow-hidden transition-all duration-300"
-            >
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 opacity-60" />
+          <div className="relative w-full bg-white text-neutral-900 overflow-hidden font-['Plus_Jakarta_Sans']">
+            {/* Rotated Left Scroll Down Indicator (from reference design) */}
+            <div className="hidden xl:flex absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-30 items-center gap-2.5 -rotate-90 origin-center text-[10px] font-bold tracking-[0.2em] text-neutral-400 select-none pointer-events-none">
+              <span className="w-1.5 h-1.5 rounded-full bg-neutral-300"></span>
+              <span className="uppercase tracking-widest text-neutral-400">Scroll Down</span>
+              <span className="text-neutral-400 transform -rotate-90">⟶</span>
+            </div>
 
-              {/* Navigation Bar */}
-              <header className="relative z-30 pt-6 sm:pt-8 px-6 sm:px-12 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <img src="assets/digeetro-logo.jpg" alt="DIGEETRO" className="h-9 sm:h-10 w-auto object-contain rounded" />
-                </div>
+            {/* Main Header & Hero Container */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Modern Minimal Header */}
+              <header className="pt-6 sm:pt-8 pb-4 flex items-center justify-between border-b border-transparent">
+                {/* Official Digeetro Logo in Front + DIGEETRO text */}
+                <a href="index.html" className="flex items-center gap-3 group">
+                  <img
+                    src="assets/digeetro-logo.jpg"
+                    alt="DIGEETRO DIGITAL SOLUTIONS"
+                    className="h-12 sm:h-14 md:h-16 w-auto object-contain rounded-lg transition-transform group-hover:scale-105 duration-200 shadow-xs"
+                  />
+                  <span className="text-xl sm:text-2xl font-black tracking-tight text-neutral-950 font-['Outfit']">
+                    DIGEETRO
+                  </span>
+                </a>
 
-                <nav className="hidden md:flex items-center gap-1.5 p-1.5 rounded-full bg-white/70 backdrop-blur-md border border-neutral-200/70 shadow-xs text-xs font-medium text-neutral-600">
-                  <button className="px-4 py-1.5 rounded-full hover:text-neutral-900 transition-colors cursor-pointer">Features</button>
-                  <button className="px-4 py-1.5 rounded-full hover:text-neutral-900 transition-colors cursor-pointer">How it works</button>
-                  <button className="px-4 py-1.5 rounded-full bg-white text-neutral-900 font-semibold shadow-xs border border-neutral-100 transition-colors cursor-pointer">Integrations</button>
-                  <button className="px-4 py-1.5 rounded-full hover:text-neutral-900 transition-colors cursor-pointer">Pricing</button>
+                {/* Minimal Nav Links */}
+                <nav className="hidden md:flex items-center gap-7 lg:gap-9 text-sm font-semibold text-neutral-700">
+                  <a href="index.html" className="text-neutral-950 font-bold hover:text-purple-600 transition-colors">Home</a>
+                  <a href="services.html" className="hover:text-purple-600 transition-colors">Services</a>
+                  <a href="work.html" className="hover:text-purple-600 transition-colors">Work</a>
+                  <a href="about.html" className="hover:text-purple-600 transition-colors">About</a>
+                  <a href="why-digeetro.html" className="hover:text-purple-600 transition-colors">Why Digeetro</a>
+                  <a href="contact.html" className="hover:text-purple-600 transition-colors">Contact</a>
                 </nav>
 
-                <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-950 text-white text-xs font-semibold hover:bg-neutral-800 transition-all hover:scale-105 active:scale-95 shadow-sm cursor-pointer">
-                  <span>Get the app</span>
-                  <IconArrowUpRight className="w-3.5 h-3.5" />
-                </button>
+                {/* Right Button */}
+                <div className="flex items-center gap-3">
+                  <a
+                    href="contact.html"
+                    className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-neutral-950 text-white text-xs sm:text-sm font-semibold hover:bg-neutral-800 transition-all hover:scale-105 active:scale-95 shadow-sm"
+                  >
+                    <span>Start a Project</span>
+                    <span className="text-xs">→</span>
+                  </a>
+                </div>
               </header>
 
-              {/* Hero Content Area */}
-              <div className="relative z-20 pt-7 sm:pt-9 pb-6 sm:pb-8 px-4 sm:px-8 text-center flex flex-col items-center">
-                <h1 className="max-w-4xl mx-auto text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] tracking-tight text-neutral-900 leading-[1.08] font-['Instrument_Serif'] font-normal">
-                  <span className="block">A clearer mind</span>
-                  <span className="block italic text-neutral-900 font-normal">for a brighter you.</span>
-                </h1>
-
-                <p className="mt-3.5 max-w-xl mx-auto text-neutral-500 text-xs sm:text-sm md:text-base leading-relaxed font-normal">
-                  Digeetro helps you capture ideas, organize your thoughts, and stay focused — all in one beautiful space.
-                </p>
-
-                <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-                  <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-neutral-950 text-white text-xs sm:text-sm font-semibold hover:bg-neutral-800 transition-all hover:scale-105 active:scale-95 shadow-md shadow-neutral-900/10 cursor-pointer">
-                    <span>Get started free</span>
-                    <IconArrowUpRight className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    onClick={onWatchOpeningStory}
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white border border-neutral-200 text-neutral-800 text-xs sm:text-sm font-medium hover:bg-neutral-50 hover:border-neutral-300 transition-all hover:scale-105 active:scale-95 shadow-xs cursor-pointer"
-                  >
-                    <IconPlay className="w-3.5 h-3.5 text-neutral-900 fill-current" />
-                    <span>Watch opening animation</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Visual Showcase: Portrait & 3D Orbital Glass Cards */}
-              <div className="relative w-full max-w-5xl mx-auto mt-2 sm:mt-4 h-[380px] sm:h-[460px] md:h-[520px] flex items-end justify-center overflow-visible">
-                <div
-                  className="absolute bottom-0 w-[300px] sm:w-[380px] md:w-[460px] z-10 transition-transform duration-300 ease-out will-change-transform"
-                  style={{
-                    transform: `translate3d(${mousePos.x * 12}px, ${mousePos.y * 8}px, 0)`,
-                  }}
-                >
-                  <img
-                    src="assets/hero-portrait-final.png"
-                    alt="Creative Portrait"
-                    className="w-full h-auto object-contain mx-auto drop-shadow-2xl"
-                  />
-                </div>
-
-                {/* Left Card: Turn thoughts into progress */}
-                <div
-                  className="absolute left-4 sm:left-12 md:left-16 top-6 sm:top-10 z-20 w-44 sm:w-56 p-4 sm:p-5 rounded-2xl bg-white/85 backdrop-blur-xl border border-neutral-200/80 shadow-[0_15px_35px_-5px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out will-change-transform"
-                  style={{
-                    transform: `translate3d(${mousePos.x * -16}px, ${mousePos.y * -12}px, 0)`,
-                  }}
-                >
-                  <div className="w-7 h-7 rounded-lg bg-neutral-100 flex items-center justify-center mb-3 text-neutral-700">
-                    <IconSparkles className="w-4 h-4" />
+              {/* Hero Body Grid */}
+              <div className="pt-8 sm:pt-14 pb-12 sm:pb-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+                {/* Left Column: Headline, Subtitles, Buttons */}
+                <div className="lg:col-span-7 xl:col-span-7 text-left">
+                  {/* Pill Badge */}
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100/90 border border-neutral-200/80 text-xs font-semibold text-neutral-800 mb-6">
+                    <span className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 animate-pulse"></span>
+                    <span>Digital Growth Studio</span>
                   </div>
-                  <h4 className="text-xs sm:text-sm font-bold text-neutral-900 leading-snug">
-                    Turn thoughts into progress.
-                  </h4>
-                  <p className="mt-1 text-[11px] sm:text-xs text-neutral-500 leading-normal">
-                    Capture, organise and do more with intelligent clarity.
+
+                  {/* Main Headline with Serif "Welcome to" and Bold "Digeetro!" with green brush underline */}
+                  <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem] tracking-tight text-neutral-950 leading-[1.02] font-normal mb-6">
+                    <span className="block font-['Instrument_Serif'] italic font-normal text-neutral-900">
+                      Welcome to
+                    </span>
+                    <span className="block font-black font-['Outfit'] text-neutral-950 tracking-tight relative inline-block mt-1">
+                      Digeetro!
+                      {/* Neon lime-green hand-painted brush underline */}
+                      <svg className="absolute -bottom-2 sm:-bottom-3 left-0 w-full h-4 sm:h-5 pointer-events-none" viewBox="0 0 260 16" fill="none" preserveAspectRatio="none">
+                        <defs>
+                          <linearGradient id="digeetroLogoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stopColor="#5C24E5" />
+                            <stop offset="45%" stopColor="#B829A0" />
+                            <stop offset="75%" stopColor="#E02888" />
+                            <stop offset="100%" stopColor="#FF6A3D" />
+                          </linearGradient>
+                        </defs>
+                        <path d="M4 11C40 4 140 2 256 6C190 10 100 13 20 14C12 14.1 6 12.5 4 11Z" fill="url(#digeetroLogoGrad)"/>
+                      </svg>
+                    </span>
+                  </h1>
+
+                  {/* Subtitles */}
+                  <h2 className="text-base sm:text-lg md:text-xl font-bold text-neutral-950 tracking-tight mb-2 font-['Outfit']">
+                    Digital growth, built with craft & clarity.
+                  </h2>
+                  <p className="text-neutral-500 text-sm sm:text-base leading-relaxed max-w-lg mb-8 font-normal">
+                    We turn ideas into impactful digital experiences — through strategy, creativity and technology.
                   </p>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-wrap items-center gap-4">
+                    <a
+                      href="contact.html"
+                      className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-neutral-950 text-white text-sm font-semibold hover:bg-neutral-800 transition-all hover:scale-105 active:scale-95 shadow-md shadow-neutral-950/10"
+                    >
+                      <span>Start a Project</span>
+                      <span>→</span>
+                    </a>
+
+                    <a
+                      href="#work"
+                      className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-white border border-neutral-300/80 text-neutral-900 text-sm font-semibold hover:bg-neutral-50 hover:border-neutral-400 transition-all hover:scale-105 active:scale-95 shadow-xs"
+                    >
+                      <span className="w-5 h-5 rounded-full bg-neutral-100 flex items-center justify-center text-[9px] text-neutral-900">▶</span>
+                      <span>See Our Work</span>
+                    </a>
+                  </div>
                 </div>
 
-                {/* Right Card: Ideas, anytime, anywhere */}
-                <div
-                  className="absolute right-4 sm:right-12 md:right-16 top-16 sm:top-24 z-20 w-44 sm:w-56 p-4 sm:p-5 rounded-2xl bg-white/85 backdrop-blur-xl border border-neutral-200/80 shadow-[0_15px_35px_-5px_rgba(0,0,0,0.08)] transition-transform duration-300 ease-out will-change-transform"
-                  style={{
-                    transform: `translate3d(${mousePos.x * -20}px, ${mousePos.y * -14}px, 0)`,
-                  }}
-                >
-                  <div className="flex items-center -space-x-1.5 mb-2.5">
-                    <div className="w-6 h-6 rounded-full bg-purple-200 border-2 border-white flex items-center justify-center text-[9px] font-bold text-purple-700">D</div>
-                    <div className="w-6 h-6 rounded-full bg-pink-200 border-2 border-white flex items-center justify-center text-[9px] font-bold text-pink-700">G</div>
-                    <div className="w-6 h-6 rounded-full bg-orange-200 border-2 border-white flex items-center justify-center text-[9px] font-bold text-orange-700">T</div>
-                    <div className="w-6 h-6 rounded-full bg-neutral-100 border-2 border-white flex items-center justify-center text-[9px] font-bold text-neutral-600">+</div>
+                {/* Right Column: 3D Stickman with Swirling Ring, Script & Floating Glass Card */}
+                <div className="lg:col-span-5 xl:col-span-5 relative flex items-center justify-center">
+                  {/* Handwritten Script floating above */}
+                  <div className="absolute -top-4 sm:-top-6 right-4 sm:right-10 z-20 font-['Caveat'] text-3xl sm:text-4xl font-bold text-neutral-900 -rotate-6 select-none flex items-center gap-1.5 drop-shadow-xs">
+                    <span>Let's Grow Together</span>
+                    <span className="text-sm text-neutral-400">✦</span>
                   </div>
-                  <h4 className="text-xs sm:text-sm font-bold text-neutral-900 leading-snug">
-                    Ideas, anytime, anywhere.
-                  </h4>
-                  <p className="mt-1 text-[11px] sm:text-xs text-neutral-500 leading-normal">
-                    Sync seamless solutions across all your platforms.
-                  </p>
+
+                  {/* 3D Stickman Image */}
+                  <div className="relative w-full max-w-[420px] sm:max-w-[480px] mx-auto z-10 transition-transform duration-300 hover:scale-[1.02]">
+                    <img
+                      src="assets/hero-stickman-3d.jpg"
+                      alt="Digeetro 3D Mascot Character"
+                      className="w-full h-auto object-contain mx-auto drop-shadow-xl rounded-3xl"
+                    />
+                  </div>
+
+                  {/* Floating Projects Delivered Glass Card */}
+                  <div className="absolute bottom-4 sm:bottom-8 right-2 sm:right-6 z-20 bg-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-4 border border-neutral-200/90 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.1)] flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center text-neutral-900 text-lg shrink-0">
+                      📊
+                    </div>
+                    <div>
+                      <div className="text-base sm:text-lg font-black text-neutral-950 font-['Outfit'] leading-none">
+                        <AnimatedCounter end={100} duration={1800} suffix="+" />
+                      </div>
+                      <div className="text-[11px] font-semibold text-neutral-500 mt-0.5">
+                        Projects Delivered
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1199,250 +334,1062 @@
         );
       }
 
-      // --- COMPONENT: AgencyShowcase (Enterprise Capabilities) ---
-      function AgencyShowcase() {
-        const services = [
-          {
-            icon: <IconCpu className="w-6 h-6 text-purple-600" />,
-            title: 'AI & Autonomous Systems',
-            description: 'Custom generative AI models, agentic workflows, LLM fine-tuning, and intelligent automation designed to accelerate business productivity.',
-            tags: ['Agentic Workflows', 'LLMs', 'Predictive ML', 'RAG Pipelines'],
-          },
-          {
-            icon: <IconCode className="w-6 h-6 text-pink-600" />,
-            title: 'Next-Gen Web & Mobile Engineering',
-            description: 'Ultra-fast, scalable web and mobile applications developed with React, modern component architectures, and cloud-native frameworks.',
-            tags: ['React Native', 'High Performance', 'PWAs', 'Cross-Platform'],
-          },
-          {
-            icon: <IconLayers className="w-6 h-6 text-orange-500" />,
-            title: 'Cloud Architecture & DevOps',
-            description: 'Enterprise-grade Google Cloud, AWS, Kubernetes, and CI/CD pipelines engineered for 99.99% uptime, security, and elasticity.',
-            tags: ['Google Cloud', 'Microservices', 'Kubernetes', 'Zero Trust'],
-          },
-          {
-            icon: <IconSparkles className="w-6 h-6 text-purple-500" />,
-            title: 'Cinematic Design & Brand Experience',
-            description: 'Immersive digital experiences, award-winning UI/UX architectures, motion systems, and 3D web visualizations that convert.',
-            tags: ['GSAP Motion', 'UI/UX Design Systems', 'Interactive 3D', 'WebGL'],
-          },
+      // --- COMPONENT: StatsMetrics (Clean Ribbon Container with Vertical Dividers) ---
+      function StatsMetrics() {
+        const stats = [
+          { icon: '📅', value: '3+', label: 'Years of Experience' },
+          { icon: '🏢', value: '20+', label: 'Companies Served' },
+          { icon: '🚀', value: <AnimatedCounter end={100} duration={1800} suffix="+" />, label: 'Projects Delivered' },
+          { icon: '🌐', value: '360°', label: 'Digital Coverage' },
+          { icon: '📍', value: 'CBE', label: 'Based in Coimbatore' },
         ];
 
         return (
-          <section id="services-section" className="relative bg-white py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-t border-neutral-100">
+          <div className="w-full bg-white pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 border-b border-neutral-100">
             <div className="max-w-7xl mx-auto">
-              <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-50 border border-purple-200/60 text-purple-700 text-xs font-semibold uppercase tracking-widest mb-4">
-                  <IconSparkles className="w-3.5 h-3.5 text-pink-500" />
-                  <span>Digital Solutions Portfolio</span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-900 tracking-tight font-['Outfit'] mb-6">
-                  Architecting the Future of{' '}
-                  <span className="digeetro-gradient-text">Enterprise Technology</span>
-                </h2>
-                <p className="text-neutral-600 text-base sm:text-lg leading-relaxed font-normal">
-                  At DIGEETRO DIGITAL SOLUTIONS, we bridge imaginative creativity with rigorous engineering. Every project begins with a handshake of trust and ends in measurable market leadership.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-                {services.map((srv, idx) => (
-                  <div
-                    key={`srv-${idx}`}
-                    className="group p-8 rounded-3xl bg-neutral-50/70 border border-neutral-200/70 hover:border-purple-300 hover:bg-white hover:shadow-xl hover:shadow-purple-500/5 transition-all duration-300"
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-neutral-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      {srv.icon}
+              <div className="bg-white rounded-2xl border border-neutral-200/80 shadow-xs py-4 sm:py-5 px-3 sm:px-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 md:gap-0 md:divide-x md:divide-neutral-200">
+                {stats.map((s, i) => (
+                  <div key={i} className="flex items-center gap-3 px-2 sm:px-4 py-2">
+                    <div className="w-9 h-9 rounded-xl bg-neutral-100 flex items-center justify-center text-base shrink-0">
+                      {s.icon}
                     </div>
-                    <h3 className="text-xl font-bold text-neutral-900 mb-3 group-hover:text-purple-700 transition-colors">
-                      {srv.title}
-                    </h3>
-                    <p className="text-neutral-600 text-sm leading-relaxed mb-6 font-normal">
-                      {srv.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {srv.tags.map((tag, tIdx) => (
-                        <span key={`tag-${idx}-${tIdx}`} className="text-[11px] font-semibold text-neutral-600 bg-white px-2.5 py-1 rounded-md border border-neutral-200/60">
-                          {tag}
-                        </span>
-                      ))}
+                    <div>
+                      <div className="text-sm sm:text-base font-extrabold text-neutral-950 font-['Outfit'] leading-tight">
+                        {s.value}
+                      </div>
+                      <div className="text-[11px] sm:text-xs text-neutral-500 font-medium">
+                        {s.label}
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        );
+      }
 
-              {/* Bottom Copyright & Brand Statement */}
-              <div className="text-center pt-10 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
-                <div className="flex items-center gap-2">
-                  <img src="assets/digeetro-logo.jpg" alt="DIGEETRO" className="h-6 w-auto object-contain rounded" />
-                  <span className="font-semibold text-neutral-700">DIGEETRO DIGITAL SOLUTIONS</span>
+      // --- COMPONENT: ServicesSection (Two-Column Layout with Dark Highlight Card) ---
+      function ServicesSection() {
+        const services = [
+          {
+            num: '01',
+            icon: '💬',
+            title: 'Social Media Marketing',
+            desc: 'Build a stronger online presence.',
+            link: 'services.html',
+            isDark: false,
+          },
+          {
+            num: '02',
+            icon: '📊',
+            title: 'Performance Marketing',
+            desc: 'Get more leads, grow faster.',
+            link: 'services.html',
+            isDark: false,
+          },
+          {
+            num: '03',
+            icon: '🌐',
+            title: 'Website Development & SEO',
+            desc: 'Beautiful websites. Higher visibility.',
+            link: 'services.html',
+            isDark: false,
+          },
+          {
+            num: '04',
+            icon: '✏️',
+            title: 'Content Marketing',
+            desc: 'Content that connects.',
+            link: 'services.html',
+            isDark: false,
+          },
+          {
+            num: '05',
+            icon: '📷',
+            title: 'Product & Video Shoot',
+            desc: 'Make your brand impossible to ignore.',
+            link: 'services.html',
+            isDark: false,
+          },
+          {
+            num: '06',
+            icon: '▶',
+            title: 'Video Editing',
+            desc: 'Every frame tells a story.',
+            link: 'services.html',
+            isDark: true, // Special dark card variant from reference image
+          },
+          {
+            num: '07',
+            icon: '🎙️',
+            title: 'Female Voice Over',
+            desc: 'Give your brand a voice.',
+            link: 'services.html',
+            isDark: false,
+          },
+        ];
+
+        return (
+          <section id="services" className="relative bg-white py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b border-neutral-100 overflow-hidden">
+            {/* Decorative Lime Asterisk Doodle in Background */}
+            <div className="absolute right-4 bottom-10 sm:bottom-16 w-36 sm:w-52 h-36 sm:h-52 pointer-events-none select-none z-0 opacity-40">
+              <svg viewBox="0 0 100 100" className="w-full h-full">
+                <defs>
+                  <linearGradient id="sparkleLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#5C24E5" />
+                    <stop offset="50%" stopColor="#E02888" />
+                    <stop offset="100%" stopColor="#FF6A3D" />
+                  </linearGradient>
+                </defs>
+                <path d="M50 0 C47 30 47 30 20 20 C30 47 30 47 0 50 C30 53 30 53 20 80 C47 70 47 70 50 100 C53 70 53 70 80 80 C70 53 70 53 100 50 C70 47 70 47 80 20 C53 30 53 30 50 0 Z" fill="url(#sparkleLogoGrad)"/>
+              </svg>
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+                {/* Left Column: Heading, Subtext, Button, Hand-drawn Arrow */}
+                <div className="lg:col-span-3 xl:col-span-3 flex flex-col justify-between">
+                  <div>
+                    {/* Accent Tag */}
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="w-6 h-1 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 rounded-full"></span>
+                      <span className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-800 font-['Outfit']">
+                        OUR SERVICES
+                      </span>
+                    </div>
+
+                    {/* Headline */}
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-950 font-['Outfit'] tracking-tight leading-[1.08] mb-4">
+                      Everything your <br />
+                      brand needs to <br />
+                      <span className="font-['Instrument_Serif'] italic font-normal digeetro-gradient-text">grow digitally.</span>
+                    </h2>
+
+                    <p className="text-neutral-500 text-sm sm:text-base leading-relaxed max-w-sm mb-6">
+                      From strategy to execution, we bring creativity and technology together.
+                    </p>
+
+                    <div className="flex items-center gap-4">
+                      <a
+                        href="services.html"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-neutral-950 text-white text-xs sm:text-sm font-semibold hover:bg-neutral-800 transition-all hover:scale-105 active:scale-95 shadow-sm"
+                      >
+                        <span>Explore All Services</span>
+                        <span>→</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Hand-drawn Curved Doodle Arrow */}
+                  <div className="hidden lg:block mt-12 text-neutral-300">
+                    <svg className="w-20 h-16" viewBox="0 0 80 60" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M10 10 C 25 35, 55 45, 70 30" />
+                      <path d="M60 25 L 70 30 L 68 40" />
+                    </svg>
+                  </div>
                 </div>
-                <div>© 2026 DIGEETRO DIGITAL SOLUTIONS. All rights reserved.</div>
+
+                {/* Right Column Grid: Service Cards */}
+                <div className="lg:col-span-9 xl:col-span-9">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
+                    {services.map((srv, idx) => (
+                      srv.isDark ? (
+                        /* Card 06: Dark Highlighted Card */
+                        <a
+                          key={idx}
+                          href={srv.link}
+                          className="p-5 sm:p-6 rounded-2xl bg-[#0d0d10] text-white border border-neutral-800 flex flex-col justify-between shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300 group cursor-pointer"
+                        >
+                          <div>
+                            <div className="w-10 h-10 rounded-full border border-pink-400 text-pink-400 flex items-center justify-center text-xs mb-4 shadow-[0_0_20px_rgba(224,40,136,0.35)] group-hover:scale-110 transition-transform">
+                              ▶
+                            </div>
+                            <div className="text-[11px] font-bold tracking-widest text-pink-400 uppercase">
+                              {srv.num}
+                            </div>
+                            <h3 className="text-base sm:text-lg font-bold text-white font-['Outfit'] mt-1 leading-snug">
+                              {srv.title}
+                            </h3>
+                            <p className="text-xs text-neutral-400 mt-1.5 leading-relaxed">
+                              {srv.desc}
+                            </p>
+                          </div>
+
+                          <div className="mt-6 flex justify-end">
+                            <span className="w-7 h-7 rounded-full bg-white/10 text-white flex items-center justify-center text-xs group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-pink-500 group-hover:text-white transition-colors">
+                              →
+                            </span>
+                          </div>
+                        </a>
+                      ) : (
+                        /* Standard Clean White Card */
+                        <a
+                          key={idx}
+                          href={srv.link}
+                          className="p-5 sm:p-6 rounded-2xl bg-white border border-neutral-200/80 flex flex-col justify-between shadow-xs hover:shadow-md hover:border-neutral-300 hover:scale-[1.02] transition-all duration-300 group cursor-pointer"
+                        >
+                          <div>
+                            <div className="w-8 h-8 rounded-lg bg-neutral-100 flex items-center justify-center text-base mb-4 text-neutral-700">
+                              {srv.icon}
+                            </div>
+                            <div className="text-[11px] font-bold tracking-widest text-neutral-400 uppercase">
+                              {srv.num}
+                            </div>
+                            <h3 className="text-base sm:text-lg font-bold text-neutral-900 font-['Outfit'] mt-1 leading-snug group-hover:text-purple-600 transition-colors">
+                              {srv.title}
+                            </h3>
+                            <p className="text-xs text-neutral-500 mt-1.5 leading-relaxed">
+                              {srv.desc}
+                            </p>
+                          </div>
+
+                          <div className="mt-6 flex justify-end">
+                            <span className="w-7 h-7 rounded-full bg-neutral-100 text-neutral-700 flex items-center justify-center text-xs group-hover:bg-neutral-900 group-hover:text-white transition-colors">
+                              →
+                            </span>
+                          </div>
+                        </a>
+                      )
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </section>
         );
       }
 
-      // --- MAIN APP COMPONENT ---
-      function App() {
-        const containerRef = useRef(null);
-        const trackRef = useRef(null);
-        const lenisRef = useRef(null);
+      // --- COMPONENT: SelectedWork (Case Studies Grid from Reference Image) ---
+      function SelectedWork() {
+        const projects = [
+          {
+            title: 'Loop Mode',
+            category: 'Social Media',
+            image: 'assets/work-loopmode.jpg',
+            link: 'work.html',
+          },
+          {
+            title: 'Urban Nest',
+            category: 'Website',
+            image: 'assets/work-urbannest.jpg',
+            link: 'work.html',
+          },
+          {
+            title: 'Homeroot',
+            category: 'Performance',
+            image: 'assets/work-homeroot.jpg',
+            link: 'work.html',
+          },
+        ];
 
-        const [progress, setProgress] = useState(0);
-        const [cameraShake, setCameraShake] = useState({ x: 0, y: 0 });
+        return (
+          <section id="work" className="bg-white py-20 sm:py-28 px-4 sm:px-6 lg:px-8 border-b border-neutral-100">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-8">
+                {/* Left Column: Heading & CTA */}
+                <div className="lg:col-span-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-6 h-1 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 rounded-full"></span>
+                    <span className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-800 font-['Outfit']">
+                      OUR WORK
+                    </span>
+                  </div>
 
-        const soundFlagsRef = useRef({
-          logo: false,
-          handshake: false,
-          welcome: false,
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-950 font-['Outfit'] tracking-tight leading-[1.1] mb-3">
+                    Ideas turned into <br />
+                    digital impact.
+                  </h2>
+
+                  <p className="text-neutral-500 text-sm sm:text-base leading-relaxed max-w-sm mb-6">
+                    Explore our latest projects and see how we help brands grow.
+                  </p>
+
+                  <a
+                    href="work.html"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-neutral-300 text-neutral-900 text-xs sm:text-sm font-semibold hover:bg-neutral-50 transition-all hover:scale-105 active:scale-95 shadow-xs"
+                  >
+                    <span>View Our Work</span>
+                    <span>→</span>
+                  </a>
+                </div>
+
+                {/* Right Cards: 3 Project Cards + 1 Summary Card */}
+                <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                  {projects.map((p, idx) => (
+                    <a
+                      key={idx}
+                      href={p.link}
+                      className="group relative h-64 sm:h-72 rounded-2xl overflow-hidden shadow-xs border border-neutral-200/80 block cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+                    >
+                      <img
+                        src={p.image}
+                        alt={p.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                      <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <div className="text-sm sm:text-base font-bold font-['Outfit']">
+                          {p.title}
+                        </div>
+                        <div className="text-xs text-neutral-300 font-medium">
+                          {p.category}
+                        </div>
+                      </div>
+                    </a>
+                  ))}
+
+                  {/* 4th Card: 50+ Projects summary card */}
+                  <a
+                    href="work.html"
+                    className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200/80 flex flex-col justify-between hover:bg-neutral-100/70 hover:shadow-md transition-all group cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="text-xl font-black font-['Outfit'] text-neutral-950">
+                        100+ Projects
+                      </div>
+                      <span className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center text-xs group-hover:translate-x-1 transition-transform">
+                        →
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-500 mt-4 leading-relaxed">
+                      Let's create something together.
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // --- COMPONENT: BrandsShowcase (TRUSTED BY BRANDS Strip & Interactive Cards) ---
+      function BrandsShowcase() {
+        const [showAllBrands, setShowAllBrands] = useState(false);
+
+        const mainBrands = [
+          { name: 'Loop Mode', desc: 'CYCLE SHOWROOM' },
+          { name: 'Urban Nest', desc: 'FURNITURE & LIFESTYLE' },
+          { name: 'Star Fabric', desc: 'LAUNDRY • FASHION' },
+          { name: 'HOMEROOT', desc: 'REAL ESTATE' },
+          { name: 'Nandhini V.', desc: 'MUSIC / ARTIST' },
+          { name: 'Adidev Green', desc: 'MICROGREENS' },
+        ];
+
+        const allBrands = [
+          { name: 'Loop Mode', desc: 'Cycle Showroom' },
+          { name: 'Urban Nest', desc: 'Furniture & Lifestyle' },
+          { name: 'Star Fabric', desc: 'Laundry • Fashion' },
+          { name: 'HOMEROOT', desc: 'Real Estate • Investment' },
+          { name: 'Nandhini V.', desc: 'Music / Artist' },
+          { name: 'Adidev Green', desc: 'Microgreens' },
+          { name: 'Dominus', desc: 'Education / Coaching' },
+          { name: 'Doremi Kids', desc: 'Preschool / Early Education' },
+          { name: 'Civilianz', desc: 'Construction' },
+          { name: 'Tonerstouch', desc: 'Cosmetic Materials' },
+          { name: 'AARARA', desc: 'Fashion / Boutique' },
+          { name: 'CB Trendz', desc: 'Fashion & Apparel' },
+          { name: 'HAS Dental', desc: 'Dental Healthcare' },
+          { name: 'The Dealoutlet', desc: 'Retail & Deals' },
+          { name: 'Power Bouncers', desc: 'Entertainment & Events' },
+          { name: 'O2 Mobile Service', desc: 'Mobile Care & Repairs' },
+          { name: 'Sivi Boutique', desc: 'Fashion / Boutique' },
+          { name: '3 Treasures', desc: 'Lifestyle & Retail' },
+          { name: 'Royaloak', desc: 'Furniture & Home Décor' },
+        ];
+
+        return (
+          <section className="bg-white py-14 sm:py-18 px-4 sm:px-6 lg:px-8 border-b border-neutral-100">
+            <div className="max-w-7xl mx-auto">
+              {/* Horizontal Strip matching reference image */}
+              <div className="bg-white rounded-2xl border border-neutral-200/80 p-5 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="w-6 h-1 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 rounded-full"></span>
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-800 font-['Outfit']">
+                    TRUSTED BY BRANDS
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-xs font-semibold text-neutral-700">
+                  {mainBrands.map((b, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <span className="font-bold text-neutral-900">{b.name}</span>
+                      <span className="text-[10px] text-neutral-400 font-medium">({b.desc})</span>
+                      {i < mainBrands.length - 1 && (
+                        <span className="hidden sm:inline text-neutral-300 ml-2">|</span>
+                      )}
+                    </div>
+                  ))}
+
+                  <button
+                    onClick={() => setShowAllBrands(!showAllBrands)}
+                    className="text-xs font-bold text-purple-600 hover:text-pink-600 transition-colors cursor-pointer"
+                  >
+                    {showAllBrands ? '− LESS BRANDS' : '+ MORE BRANDS'}
+                  </button>
+                </div>
+              </div>
+
+              {/* Complete 19-Brand Interactive Cards (with lift, lime top-border & shimmer hover effects) */}
+              {showAllBrands && (
+                <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 animate-fadeIn">
+                  {allBrands.map((b, i) => (
+                    <div
+                      key={i}
+                      className="group relative overflow-hidden p-5 rounded-2xl bg-white border border-neutral-200/80 text-center shadow-xs transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_-12px_rgba(92,36,229,0.18)] hover:border-purple-300 cursor-pointer select-none"
+                    >
+                      {/* Top lime highlight bar on hover */}
+                      <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                      {/* Shimmer light sweep */}
+                      <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/80 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-out pointer-events-none" />
+
+                      <h4 className="font-bold text-neutral-900 font-['Outfit'] text-base transition-colors duration-200 group-hover:text-purple-600">
+                        {b.name}
+                      </h4>
+                      <p className="text-xs text-neutral-500 mt-1 transition-colors duration-200 group-hover:text-neutral-700 font-medium">
+                        {b.desc}
+                      </p>
+
+                      <div className="mt-2.5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
+                        <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 shadow-xs shadow-purple-500/50" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        );
+      }
+
+      // --- COMPONENT: IndustriesSection ---
+      function IndustriesSection() {
+        const industries = [
+          'Fashion & Lifestyle', 'Real Estate', 'Education', 'Retail', 'Construction',
+          'Food & Lifestyle', 'Health & Wellness', 'Entertainment', 'Professional Services', 'Local Businesses'
+        ];
+
+        return (
+          <section className="bg-white py-20 px-4 sm:px-6 lg:px-8 border-b border-neutral-100">
+            <div className="max-w-5xl mx-auto text-center">
+              <span className="text-xs font-bold tracking-[0.25em] uppercase text-purple-700 block mb-2">
+                Industries We Work With
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 font-['Outfit'] mb-3">
+                We speak more than one business language.
+              </h2>
+              <p className="text-sm text-neutral-600 max-w-xl mx-auto mb-10">
+                From storefronts to startups, classrooms to construction sites, we understand that every industry needs a different digital approach.
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-3">
+                {industries.map((ind, i) => (
+                  <span
+                    key={i}
+                    className="px-5 py-2.5 rounded-full bg-neutral-50 text-neutral-800 text-xs sm:text-sm font-semibold border border-neutral-200/80 shadow-xs"
+                  >
+                    {ind}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // --- COMPONENT: HowWeWork (Process 01 to 05) ---
+      function HowWeWork() {
+        const steps = [
+          {
+            num: '01',
+            title: 'DISCOVER',
+            desc: 'First, we listen. We understand your business, audience, challenges, competitors and goals before we start creating.',
+          },
+          {
+            num: '02',
+            title: 'STRATEGISE',
+            desc: 'Then, we find the direction. We turn business objectives into a clear digital strategy with the right platforms, content and campaigns.',
+          },
+          {
+            num: '03',
+            title: 'CREATE',
+            desc: 'Now, we make it happen. From designs and videos to websites, campaigns and copy, we create the assets your brand needs.',
+          },
+          {
+            num: '04',
+            title: 'LAUNCH',
+            desc: 'Put it into motion. Your campaigns and content go live with consistency, attention to detail and a clear purpose.',
+          },
+          {
+            num: '05',
+            title: 'OPTIMISE',
+            desc: 'Learn. Improve. Grow. We study performance, understand what works and continuously improve the digital strategy.',
+          },
+        ];
+
+        return (
+          <section className="bg-[#fafafa] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-b border-neutral-200/60">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-[0.25em] uppercase text-orange-600 block mb-2">
+                  How We Work
+                </span>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-900 font-['Outfit']">
+                  From "Let's talk" to <span className="digeetro-gradient-text">"Let's grow."</span>
+                </h2>
+                <p className="mt-3 text-sm sm:text-base text-neutral-600">
+                  Great digital work doesn't happen by accident. Our process keeps strategy, creativity and execution moving in the same direction.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+                {steps.map((st, i) => (
+                  <div key={i} className="p-6 rounded-2xl bg-white border border-neutral-200/80 shadow-xs relative">
+                    <span className="text-2xl font-black font-['Outfit'] text-neutral-300 block mb-3">{st.num}</span>
+                    <h4 className="text-base font-bold text-neutral-900 font-['Outfit'] mb-2">{st.title}</h4>
+                    <p className="text-xs text-neutral-600 leading-relaxed font-normal">{st.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // --- COMPONENT: AboutFounders (Meet Dhanya & Gnanaprabu) ---
+      function AboutFounders() {
+        return (
+          <section id="about" className="bg-white py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-b border-neutral-100">
+            <div className="max-w-6xl mx-auto">
+              {/* Studio Overview */}
+              <div className="max-w-3xl mx-auto text-center mb-20">
+                <span className="text-xs font-bold tracking-[0.25em] uppercase text-purple-700 block mb-2">
+                  About Digeetro
+                </span>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-900 font-['Outfit'] mb-6">
+                  Small team. <span className="digeetro-gradient-text">Big digital energy.</span>
+                </h2>
+                <p className="text-neutral-600 text-base leading-relaxed font-normal">
+                  Digeetro Digital Solutions is a hands-on digital growth studio based in Keeranatham, Coimbatore. We work closely with businesses instead of treating them like another account number. Our approach combines creative thinking, digital strategy, technology and performance marketing to create work that has a purpose beyond looking good.
+                </p>
+              </div>
+
+              {/* Founders Profile */}
+              <div>
+                <div className="text-center mb-12">
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-400 block mb-1">
+                    Who's behind Digeetro?
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl font-bold text-neutral-900 font-['Outfit']">
+                    Meet the Founders
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                  {/* Dhanya U */}
+                  <div className="p-8 rounded-3xl bg-[#fafafa] border border-neutral-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div className="w-16 h-16 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-2xl font-['Outfit'] mb-5">
+                        DU
+                      </div>
+                      <h4 className="text-xl font-extrabold text-neutral-900 font-['Outfit']">DHANYA U</h4>
+                      <span className="text-xs font-bold text-purple-700 uppercase tracking-wider block mb-4">Co-Founder</span>
+                      <p className="text-sm text-neutral-600 leading-relaxed font-normal">
+                        Dhanya leads client strategy and creative direction, shaping how brands communicate, look and connect with their audiences across digital platforms. Her focus is on turning a business idea into a clear and memorable digital identity.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Gnanaprabu D */}
+                  <div className="p-8 rounded-3xl bg-[#fafafa] border border-neutral-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                      <div className="w-16 h-16 rounded-2xl bg-pink-100 text-purple-700 flex items-center justify-center font-bold text-2xl font-['Outfit'] mb-5">
+                        GD
+                      </div>
+                      <h4 className="text-xl font-extrabold text-neutral-900 font-['Outfit']">GNANAPRABU D</h4>
+                      <span className="text-xs font-bold text-purple-600 uppercase tracking-wider block mb-4">Co-Founder</span>
+                      <p className="text-sm text-neutral-600 leading-relaxed font-normal">
+                        Gnanaprabu drives performance marketing and technical execution, connecting creative work with campaigns, platforms and measurable business objectives. His focus is on making digital activity more purposeful and performance-driven.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // --- COMPONENT: WhyDigeetroSection ---
+      function WhyDigeetroSection() {
+        const points = [
+          {
+            title: 'Local. Hands-on. Accessible.',
+            desc: "Based in Coimbatore, we're close enough to understand the local business landscape and hands-on enough to stay involved.",
+          },
+          {
+            title: 'One team. One direction.',
+            desc: "Strategy, content, advertising, websites and creative work shouldn't operate in separate worlds. We bring them together.",
+          },
+          {
+            title: 'Creativity with purpose.',
+            desc: 'Beautiful visuals are great. But beautiful visuals that communicate, connect and convert are better.',
+          },
+          {
+            title: 'Flexible by design.',
+            desc: "Need everything? We'll handle it. Need only video editing or performance marketing? We'll handle that too. Choose the support your business actually needs.",
+          },
+        ];
+
+        return (
+          <section id="why-digeetro" className="bg-[#f8f8fa] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-b border-neutral-200/60">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-[0.25em] uppercase text-purple-600 block mb-2">
+                  Why Digeetro
+                </span>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-neutral-900 font-['Outfit'] mb-4">
+                  We don't believe in digital for digital's sake.
+                </h2>
+                <p className="text-neutral-600 text-sm sm:text-base">
+                  Every post, campaign, website and creative should have a reason to exist.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                {points.map((pt, i) => (
+                  <div key={i} className="p-8 rounded-3xl bg-white border border-neutral-200/80 shadow-xs">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-6 h-6 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+                        <IconCheck className="w-3.5 h-3.5" />
+                      </div>
+                      <h3 className="text-lg font-bold text-neutral-900 font-['Outfit']">{pt.title}</h3>
+                    </div>
+                    <p className="text-sm text-neutral-600 leading-relaxed font-normal pl-9">
+                      {pt.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Presence Callout Banner */}
+              <div className="p-8 sm:p-12 rounded-3xl bg-neutral-950 text-white text-center max-w-4xl mx-auto shadow-2xl shadow-purple-900/10">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold font-['Outfit'] mb-4">
+                  Your brand deserves more than just "posting." <br />
+                  <span className="digeetro-gradient-text">It deserves a presence.</span>
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-neutral-800 text-xs sm:text-sm text-neutral-300">
+                  <div>A digital presence people notice.</div>
+                  <div>A message people understand.</div>
+                  <div>A brand people remember.</div>
+                  <div>A strategy that moves business forward.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // --- COMPONENT: ClientTestimonials ---
+      function ClientTestimonials() {
+        const testimonials = [
+          {
+            quote: "Digeetro helped transform our local Coimbatore shop into a digital brand. Their strategy was clear and performance ads hit the right customers instantly.",
+            name: "Rajesh Kumar",
+            role: "Marketing Lead, Local Retailer",
+          },
+          {
+            quote: "Dhanya and the team are super creative. The reels they shot and edited got us 3x standard organic engagement in just weeks.",
+            name: "Nisha Krishnan",
+            role: "Founder, Boutiques CBE",
+          },
+          {
+            quote: "They developed a clean, fast website and optimised our local SEO. Now we lead search results in Coimbatore for our construction queries.",
+            name: "Arun Vignesh",
+            role: "Director, Civilianz Builder",
+          },
+        ];
+
+        return (
+          <section className="bg-white py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-b border-neutral-100">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center max-w-2xl mx-auto mb-16">
+                <span className="text-xs font-bold tracking-[0.25em] uppercase text-purple-700 block mb-2">
+                  Client Love
+                </span>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 font-['Outfit']">
+                  Good work gets noticed. <br />
+                  <span className="digeetro-gradient-text">Great work gets remembered.</span>
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {testimonials.map((t, idx) => (
+                  <div key={idx} className="p-8 rounded-3xl bg-[#fafafa] border border-neutral-200/80 shadow-xs flex flex-col justify-between">
+                    <div>
+                      <div className="flex gap-1 text-orange-400 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <IconStar key={i} className="w-4 h-4" />
+                        ))}
+                      </div>
+                      <p className="text-sm text-neutral-700 leading-relaxed font-normal italic mb-6">
+                        "{t.quote}"
+                      </p>
+                    </div>
+                    <div className="pt-4 border-t border-neutral-200/60">
+                      <h4 className="font-bold text-neutral-900 font-['Outfit'] text-sm">{t.name}</h4>
+                      <p className="text-xs text-neutral-500">{t.role}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // --- COMPONENT: ContactSection (Direct Call & Interactive Form) ---
+      function ContactSection() {
+        const [formData, setFormData] = useState({
+          fullName: '',
+          phone: '',
+          email: '',
+          company: '',
+          businessType: '',
+          service: 'Social Media Marketing',
+          budget: 'Flexible',
+          timeline: 'Immediate (Within 2 weeks)',
+          message: '',
         });
+        const [submitted, setSubmitted] = useState(false);
 
-        const triggerCameraShake = useCallback(() => {
-          let startTime = performance.now();
-          const duration = 650;
-          const initialAmp = 8;
-          soundManager.playHandshakeImpact();
-
-          const shakeLoop = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            if (elapsed < duration) {
-              const decay = Math.exp(-elapsed / 160);
-              const amp = initialAmp * decay;
-              const x = (Math.random() - 0.5) * 2 * amp;
-              const y = (Math.random() - 0.5) * 2 * amp;
-              setCameraShake({ x, y });
-              requestAnimationFrame(shakeLoop);
-            } else {
-              setCameraShake({ x: 0, y: 0 });
-            }
-          };
-          requestAnimationFrame(shakeLoop);
-        }, []);
-
-        useEffect(() => {
-          if (window.gsap && window.ScrollTrigger) {
-            window.gsap.registerPlugin(window.ScrollTrigger);
-          }
-
-          if (window.Lenis) {
-            const lenis = new window.Lenis({
-              duration: 1.2,
-              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-              orientation: 'vertical',
-              smoothWheel: true,
-            });
-            lenisRef.current = lenis;
-
-            if (window.ScrollTrigger) {
-              lenis.on('scroll', window.ScrollTrigger.update);
-            }
-            if (window.gsap) {
-              window.gsap.ticker.add((time) => lenis.raf(time * 1000));
-              window.gsap.ticker.lagSmoothing(0);
-            }
-          }
-
-          const track = trackRef.current;
-          if (!track || !window.ScrollTrigger) return;
-
-          const st = window.ScrollTrigger.create({
-            trigger: track,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: 0.4,
-            onUpdate: (self) => {
-              const p = self.progress;
-              setProgress(p);
-
-              if (p > 0.04 && p < 0.18 && !soundFlagsRef.current.logo) {
-                soundFlagsRef.current.logo = true;
-                soundManager.playWhoosh(1.2);
-              } else if (p < 0.03) {
-                soundFlagsRef.current.logo = false;
-              }
-
-              if (p >= 0.66 && p <= 0.78 && !soundFlagsRef.current.handshake) {
-                soundFlagsRef.current.handshake = true;
-                triggerCameraShake();
-              } else if (p < 0.63) {
-                soundFlagsRef.current.handshake = false;
-              }
-
-              if (p >= 0.84 && !soundFlagsRef.current.welcome) {
-                soundFlagsRef.current.welcome = true;
-                soundManager.playWelcomeChord();
-              } else if (p < 0.80) {
-                soundFlagsRef.current.welcome = false;
-              }
-            },
-          });
-
-          return () => {
-            st.kill();
-            if (lenisRef.current) lenisRef.current.destroy();
-          };
-        }, [triggerCameraShake]);
-
-        const handleReplay = () => {
-          if (lenisRef.current) {
-            lenisRef.current.scrollTo(0);
-          } else {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-          setProgress(0);
-        };
-
-        const handleExploreServices = () => {
-          const heroEl = document.getElementById('hero-landing-page');
-          if (heroEl) {
-            if (lenisRef.current) {
-              lenisRef.current.scrollTo(heroEl);
-            } else {
-              heroEl.scrollIntoView({ behavior: 'smooth' });
-            }
-          }
+        const handleSubmit = (e) => {
+          e.preventDefault();
+          setSubmitted(true);
         };
 
         return (
-          <div className="relative bg-white text-neutral-900 select-none">
-            {/* Scroll Track: 650vh for the opening animation */}
-            <div ref={trackRef} className="relative w-full h-[650vh]">
-              <div
-                ref={containerRef}
-                className="sticky top-0 h-screen w-full overflow-hidden bg-white flex items-center justify-center"
-              >
-                {/* 1. Canvas VFX: Particles, Shockwaves, Flash */}
-                <ParticleCanvas progress={progress} onImpactTrigger={triggerCameraShake} />
+          <section id="contact" className="bg-[#fafafa] py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-b border-neutral-200/60">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                {/* Contact Info (5 cols) */}
+                <div className="lg:col-span-5 flex flex-col justify-between">
+                  <div>
+                    <span className="text-xs font-bold tracking-[0.25em] uppercase text-purple-700 block mb-2">
+                      Get In Touch
+                    </span>
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-950 font-['Outfit'] mb-4">
+                      Let's build your brand's <span className="digeetro-gradient-text">digital presence.</span>
+                    </h2>
+                    <p className="text-neutral-600 text-sm sm:text-base leading-relaxed mb-8">
+                      Tell us what you're working on. Whether you're launching something new, trying to grow an existing business or simply wondering what's possible — let's talk.
+                    </p>
 
-                {/* 2. Scene 1: Logo Reveal (0% - 25%) */}
-                <LogoScene progress={progress} />
+                    <div className="space-y-6">
+                      {/* Call Us */}
+                      <a href="tel:7550180727" className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-neutral-200/80 shadow-xs hover:border-purple-300 transition-colors">
+                        <div className="w-11 h-11 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center shrink-0">
+                          <IconPhone className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">Call Us Directly</span>
+                          <span className="text-base font-extrabold text-neutral-900 font-['Outfit']">7550180727</span>
+                        </div>
+                      </a>
 
-                {/* 3. Scene 2 & 3: Stickmen & Handshake (20% - 85%) */}
-                <HandshakeScene progress={progress} cameraShake={cameraShake} />
+                      {/* Visit Studio */}
+                      <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-neutral-200/80 shadow-xs">
+                        <div className="w-11 h-11 rounded-xl bg-neutral-100 text-purple-600 flex items-center justify-center shrink-0">
+                          <IconMapPin className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">Visit Studio</span>
+                          <span className="text-sm font-bold text-neutral-900">Keeranatham, Coimbatore</span>
+                        </div>
+                      </div>
 
-                {/* 4. Scene 4: Welcome to DIGEETRO (78% - 100%) */}
-                <WelcomeScene
-                  progress={progress}
-                  onReplay={handleReplay}
-                  onExploreServices={handleExploreServices}
-                />
+                      {/* Founders */}
+                      <div className="flex items-center gap-4 p-4 rounded-2xl bg-white border border-neutral-200/80 shadow-xs">
+                        <div className="w-11 h-11 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
+                          <IconUsers className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">Talk to Founders</span>
+                          <span className="text-sm font-bold text-neutral-900">Dhanya U & Gnanaprabu D</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Form (7 cols) */}
+                <div id="contact-form" className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border border-neutral-200/80 shadow-sm">
+                  {submitted ? (
+                    <div className="p-8 text-center bg-purple-50 rounded-2xl border border-purple-200">
+                      <div className="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center mx-auto mb-4">
+                        <IconCheck className="w-6 h-6" />
+                      </div>
+                      <h4 className="text-2xl font-bold text-neutral-900 font-['Outfit'] mb-2">Thank You, Nanba!</h4>
+                      <p className="text-sm text-neutral-600">
+                        Dhanya and Gnanaprabu received your message. We will call you back at <span className="font-bold text-purple-800">{formData.phone || 'your number'}</span> shortly.
+                      </p>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">Full Name *</label>
+                          <input
+                            required
+                            type="text"
+                            placeholder="Your name"
+                            value={formData.fullName}
+                            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                            className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">Phone Number *</label>
+                          <input
+                            required
+                            type="tel"
+                            placeholder="Mobile / WhatsApp"
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">Email Address</label>
+                          <input
+                            type="email"
+                            placeholder="you@company.com"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">Company / Brand Name</label>
+                          <input
+                            type="text"
+                            placeholder="Your business"
+                            value={formData.company}
+                            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                            className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">What does your business do?</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Retail shop, Real estate, Coaching, Clinic..."
+                          value={formData.businessType}
+                          onChange={(e) => setFormData({ ...formData, businessType: e.target.value })}
+                          className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">Service Required</label>
+                          <select
+                            value={formData.service}
+                            onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                            className="w-full px-3 py-2.5 rounded-xl border border-neutral-300 text-xs font-medium focus:outline-none focus:border-purple-600"
+                          >
+                            <option>Social Media Marketing</option>
+                            <option>Performance Marketing</option>
+                            <option>Website & SEO</option>
+                            <option>Content Marketing</option>
+                            <option>Product & Video Shoot</option>
+                            <option>Video Editing</option>
+                            <option>Female Voice Over</option>
+                            <option>Multiple Services</option>
+                            <option>Not Sure Yet</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">Budget Range</label>
+                          <select
+                            value={formData.budget}
+                            onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                            className="w-full px-3 py-2.5 rounded-xl border border-neutral-300 text-xs font-medium focus:outline-none focus:border-purple-600"
+                          >
+                            <option>Flexible</option>
+                            <option>Standard Growth Pack</option>
+                            <option>Enterprise Premium</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">Timeline</label>
+                          <select
+                            value={formData.timeline}
+                            onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
+                            className="w-full px-3 py-2.5 rounded-xl border border-neutral-300 text-xs font-medium focus:outline-none focus:border-purple-600"
+                          >
+                            <option>Immediate (Within 2 weeks)</option>
+                            <option>1 Month</option>
+                            <option>Flexible</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-neutral-700 uppercase tracking-wider mb-1.5">Tell us more</label>
+                        <textarea
+                          rows={3}
+                          placeholder="Tell us about your goals, ideas, or questions..."
+                          value={formData.message}
+                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          className="w-full px-4 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:border-purple-600 focus:ring-1 focus:ring-purple-600"
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full py-3.5 rounded-xl bg-neutral-950 text-white font-bold text-sm tracking-wider uppercase hover:bg-neutral-800 transition-all shadow-md shadow-neutral-950/15 cursor-pointer flex items-center justify-center gap-2"
+                      >
+                        <span>LET'S TALK</span>
+                        <IconArrowRight className="w-4 h-4 text-pink-400" />
+                      </button>
+                    </form>
+                  )}
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // --- COMPONENT: FinalCTA ---
+      function FinalCTA() {
+        return (
+          <section className="bg-neutral-950 text-white py-20 sm:py-28 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-radial from-purple-900/20 via-transparent to-transparent pointer-events-none" />
+            <div className="max-w-4xl mx-auto relative z-10">
+              <span className="text-xs font-bold tracking-[0.3em] uppercase text-pink-400 block mb-3">
+                READY TO MOVE YOUR BRAND FORWARD?
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-['Outfit'] tracking-tight mb-6">
+                Your next big idea deserves more than a basic digital presence. <br />
+                <span className="digeetro-gradient-text">Let's turn it into something people notice, remember and act on.</span>
+              </h2>
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+                <a
+                  href="#contact-form"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-neutral-950 text-xs sm:text-sm font-extrabold uppercase tracking-wider hover:bg-neutral-100 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-white/10"
+                >
+                  <span>START A PROJECT</span>
+                  <IconArrowRight className="w-4 h-4 text-purple-700" />
+                </a>
+
+                <a
+                  href="tel:7550180727"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-neutral-900 text-white border border-neutral-700 text-xs sm:text-sm font-bold tracking-wider hover:bg-neutral-800 transition-all hover:scale-105 active:scale-95 shadow-sm"
+                >
+                  <IconPhone className="w-4 h-4 text-pink-400" />
+                  <span>CALL 7550180727</span>
+                </a>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // --- COMPONENT: Footer ---
+      function Footer() {
+        return (
+          <footer className="bg-white text-neutral-600 py-16 px-4 sm:px-6 lg:px-8 border-t border-neutral-200">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+              <div className="md:col-span-1">
+                <img src="assets/digeetro-logo.jpg" alt="DIGEETRO" className="h-13 w-auto object-contain rounded mb-4" />
+                <p className="text-xs text-neutral-500 leading-relaxed font-normal">
+                  Digital growth, built with craft & clarity. Based in Keeranatham, Coimbatore.
+                </p>
+              </div>
+
+              <div>
+                <h5 className="text-xs font-bold text-neutral-900 uppercase tracking-wider mb-3">Explore</h5>
+                <ul className="space-y-2 text-xs">
+                  <li><a href="#hero-landing-page" className="hover:text-purple-700">Home</a></li>
+                  <li><a href="services.html" className="hover:text-purple-700">Services</a></li>
+                  <li><a href="work.html" className="hover:text-purple-700">Work</a></li>
+                  <li><a href="about.html" className="hover:text-purple-700">About</a></li>
+                  <li><a href="why-digeetro.html" className="hover:text-purple-700">Why Digeetro</a></li>
+                  <li><a href="#contact" className="hover:text-purple-700">Contact</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <h5 className="text-xs font-bold text-neutral-900 uppercase tracking-wider mb-3">Services</h5>
+                <ul className="space-y-2 text-xs">
+                  <li><a href="#services" className="hover:text-purple-700">Social Media Marketing</a></li>
+                  <li><a href="#services" className="hover:text-purple-700">Performance Marketing</a></li>
+                  <li><a href="#services" className="hover:text-purple-700">Website & SEO</a></li>
+                  <li><a href="#services" className="hover:text-purple-700">Content Marketing</a></li>
+                  <li><a href="#services" className="hover:text-purple-700">Product & Video Shoot</a></li>
+                  <li><a href="#services" className="hover:text-purple-700">Video Editing</a></li>
+                  <li><a href="#services" className="hover:text-purple-700">Female Voice Over</a></li>
+                </ul>
+              </div>
+
+              <div>
+                <h5 className="text-xs font-bold text-neutral-900 uppercase tracking-wider mb-3">Connect</h5>
+                <ul className="space-y-2 text-xs">
+                  <li><a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-purple-600">Instagram</a></li>
+                  <li><a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-blue-600">Facebook</a></li>
+                  <li><a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-blue-700">LinkedIn</a></li>
+                  <li><a href="https://youtube.com" target="_blank" rel="noreferrer" className="hover:text-red-600">YouTube</a></li>
+                  <li className="pt-2 text-neutral-900 font-bold">Call: 7550180727</li>
+                </ul>
               </div>
             </div>
 
-            {/* Mindly-style Ultra-Premium Landing Page Hero Section */}
+            <div className="max-w-6xl mx-auto pt-8 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-400 gap-2">
+              <div>© 2026 Digeetro Digital Solutions · Keeranatham, Coimbatore.</div>
+              <div>Built with creativity. Driven by growth.</div>
+            </div>
+          </footer>
+        );
+      }
+
+      // --- MAIN APP COMPONENT ---
+      function App() {
+        return (
+          <div className="relative bg-white text-neutral-900 select-none">
+            {/* --- SEAMLESS MAIN WEBSITE: HERO, STATS, SERVICES, WORK, BRANDS --- */}
             <div id="hero-landing-page">
-              <DigeetroHero onWatchOpeningStory={handleReplay} />
+              <DigeetroHero />
             </div>
 
-            {/* Agency Services Showcase */}
-            <AgencyShowcase />
+            <StatsMetrics />
+            <ServicesSection />
+            <SelectedWork />
+            <BrandsShowcase />
+            <MarqueeTicker />
+            <IndustriesSection />
+            <HowWeWork />
+            <AboutFounders />
+            <WhyDigeetroSection />
+            <ClientTestimonials />
+            <ContactSection />
+            <FinalCTA />
+            <Footer />
           </div>
         );
       }
 
-      // Mount Pure React Application
       const root = ReactDOM.createRoot(document.getElementById('root'));
       root.render(<App />);
     </script>
