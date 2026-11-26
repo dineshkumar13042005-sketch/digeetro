@@ -89,6 +89,50 @@
         animation-play-state: paused;
       }
 
+      /* Automatic Left-to-Right Shake (Runs constantly without mouse) */
+      @keyframes autoShakeLeftRight {
+        0% { transform: translateX(0) rotate(0deg); }
+        7% { transform: translateX(-12px) rotate(-1.5deg); }
+        14% { transform: translateX(12px) rotate(1.5deg); }
+        21% { transform: translateX(-10px) rotate(-1deg); }
+        28% { transform: translateX(10px) rotate(1deg); }
+        35% { transform: translateX(-7px) rotate(-0.6deg); }
+        42% { transform: translateX(7px) rotate(0.6deg); }
+        49% { transform: translateX(-4px) rotate(-0.3deg); }
+        56% { transform: translateX(4px) rotate(0.3deg); }
+        63% { transform: translateX(-2px); }
+        70% { transform: translateX(2px); }
+        75% { transform: translateX(0) rotate(0deg); }
+        100% { transform: translateX(0) rotate(0deg); }
+      }
+
+      @keyframes autoWelcomeShake {
+        0% { transform: translateX(0); }
+        8% { transform: translateX(8px); }
+        16% { transform: translateX(-8px); }
+        24% { transform: translateX(7px); }
+        32% { transform: translateX(-7px); }
+        40% { transform: translateX(5px); }
+        48% { transform: translateX(-5px); }
+        56% { transform: translateX(3px); }
+        64% { transform: translateX(0); }
+        100% { transform: translateX(0); }
+      }
+
+      .auto-shake-left-right {
+        display: inline-block !important;
+        animation: autoShakeLeftRight 1.8s ease-in-out infinite !important;
+        transform-origin: center center;
+        will-change: transform;
+      }
+
+      .auto-shake-welcome {
+        display: inline-block !important;
+        animation: autoWelcomeShake 1.8s ease-in-out infinite !important;
+        transform-origin: center center;
+        will-change: transform;
+      }
+
 
     </style>
   </head>
@@ -189,32 +233,28 @@
 
       // --- COMPONENT: DigeetroHero (Mindly & Clean SaaS Design with Coimbatore Studio Branding) ---
       function DigeetroHero({ onWatchOpeningStory }) {
+        const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
         return (
           <div className="relative w-full bg-white text-neutral-900 overflow-hidden font-['Plus_Jakarta_Sans']">
-            {/* Rotated Left Scroll Down Indicator (from reference design) */}
-            <div className="hidden xl:flex absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-30 items-center gap-2.5 -rotate-90 origin-center text-[10px] font-bold tracking-[0.2em] text-neutral-400 select-none pointer-events-none">
-              <span className="w-1.5 h-1.5 rounded-full bg-neutral-300"></span>
-              <span className="uppercase tracking-widest text-neutral-400">Scroll Down</span>
-              <span className="text-neutral-400 transform -rotate-90">⟶</span>
-            </div>
+
 
             {/* Main Header & Hero Container */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               {/* Modern Minimal Header */}
-              <header className="pt-6 sm:pt-8 pb-4 flex items-center justify-between border-b border-transparent">
+              <header className="pt-4 sm:pt-6 pb-3 sm:pb-4 flex items-center justify-between border-b border-neutral-100">
                 {/* Official Digeetro Logo in Front + DIGEETRO text */}
-                <a href="index.html" className="flex items-center gap-3 group">
+                <a href="index.html" className="flex items-center gap-2.5 sm:gap-3 group">
                   <img
                     src="assets/digeetro-logo.jpg"
                     alt="DIGEETRO DIGITAL SOLUTIONS"
-                    className="h-12 sm:h-14 md:h-16 w-auto object-contain rounded-lg transition-transform group-hover:scale-105 duration-200 shadow-xs"
+                    className="h-10 sm:h-12 md:h-14 w-auto object-contain rounded-lg transition-transform group-hover:scale-105 duration-200 shadow-xs"
                   />
-                  <span className="text-xl sm:text-2xl font-black tracking-tight text-neutral-950 font-['Outfit']">
+                  <span className="text-lg sm:text-xl md:text-2xl font-black tracking-tight text-neutral-950 font-['Outfit']">
                     DIGEETRO
                   </span>
                 </a>
 
-                {/* Minimal Nav Links */}
+                {/* Minimal Clean Text Nav for Desktop */}
                 <nav className="hidden md:flex items-center gap-7 lg:gap-9 text-sm font-semibold text-neutral-700">
                   <a href="index.html" className="text-neutral-950 font-bold hover:text-purple-600 transition-colors">Home</a>
                   <a href="services.html" className="hover:text-purple-600 transition-colors">Services</a>
@@ -224,34 +264,70 @@
                   <a href="contact.html" className="hover:text-purple-600 transition-colors">Contact</a>
                 </nav>
 
-                {/* Right Button */}
-                <div className="flex items-center gap-3">
+                {/* Right Button & Mobile Hamburger Toggle */}
+                <div className="flex items-center gap-2 sm:gap-3">
                   <a
                     href="contact.html"
-                    className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full bg-neutral-950 text-white text-xs sm:text-sm font-semibold hover:bg-neutral-800 transition-all hover:scale-105 active:scale-95 shadow-sm"
+                    className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-neutral-950 text-white text-xs sm:text-sm font-semibold hover:bg-neutral-800 transition-all hover:scale-105 active:scale-95 shadow-sm"
                   >
                     <span>Start a Project</span>
                     <span className="text-xs">→</span>
                   </a>
+
+                  {/* Mobile Hamburger Button */}
+                  <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    className="md:hidden p-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 transition-colors focus:outline-none cursor-pointer"
+                    aria-label="Toggle Navigation Menu"
+                  >
+                    {mobileMenuOpen ? (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    ) : (
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
+                      </svg>
+                    )}
+                  </button>
                 </div>
               </header>
+
+              {/* Mobile Navigation Dropdown Menu */}
+              {mobileMenuOpen && (
+                <div className="md:hidden bg-white/98 backdrop-blur-xl border-b border-neutral-200/80 px-4 pt-3 pb-6 space-y-2 shadow-xl animate-fadeIn">
+                  <a href="index.html" className="block px-4 py-2.5 rounded-xl text-sm font-bold bg-purple-50 text-purple-700">Home</a>
+                  <a href="services.html" className="block px-4 py-2.5 rounded-xl text-sm font-bold text-neutral-800 hover:bg-neutral-100">Services</a>
+                  <a href="work.html" className="block px-4 py-2.5 rounded-xl text-sm font-bold text-neutral-800 hover:bg-neutral-100">Work</a>
+                  <a href="about.html" className="block px-4 py-2.5 rounded-xl text-sm font-bold text-neutral-800 hover:bg-neutral-100">About</a>
+                  <a href="why-digeetro.html" className="block px-4 py-2.5 rounded-xl text-sm font-bold text-neutral-800 hover:bg-neutral-100">Why Digeetro</a>
+                  <a href="contact.html" className="block px-4 py-2.5 rounded-xl text-sm font-bold text-neutral-800 hover:bg-neutral-100">Contact</a>
+                  <div className="pt-2 border-t border-neutral-100">
+                    <a href="tel:7550180727" className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-purple-50 text-purple-700 font-bold text-xs hover:bg-purple-100 transition-colors">
+                      <IconPhone className="w-4 h-4" />
+                      <span>Call Studio: 7550180727</span>
+                    </a>
+                  </div>
+                </div>
+              )}
 
               {/* Hero Body Grid */}
               <div className="pt-8 sm:pt-14 pb-12 sm:pb-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
                 {/* Left Column: Headline, Subtitles, Buttons */}
                 <div className="lg:col-span-7 xl:col-span-7 text-left">
                   {/* Pill Badge */}
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100/90 border border-neutral-200/80 text-xs font-semibold text-neutral-800 mb-6">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-neutral-100/90 border border-neutral-200/80 text-xs font-semibold text-neutral-800 mb-6 cursor-pointer hero-hover-wiggle">
                     <span className="w-2 h-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 animate-pulse"></span>
                     <span>Digital Growth Studio</span>
                   </div>
 
                   {/* Main Headline with Serif "Welcome to" and Bold "Digeetro!" with green brush underline */}
                   <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.4rem] tracking-tight text-neutral-950 leading-[1.02] font-normal mb-6">
-                    <span className="block font-['Instrument_Serif'] italic font-normal text-neutral-900">
+                    <span className="block font-['Instrument_Serif'] italic font-normal text-neutral-900 cursor-pointer auto-shake-welcome">
                       Welcome to
                     </span>
-                    <span className="block font-black font-['Outfit'] text-neutral-950 tracking-tight relative inline-block mt-1">
+                    <span className="block font-black font-['Outfit'] text-neutral-950 tracking-tight relative inline-block mt-1 cursor-pointer auto-shake-left-right">
                       Digeetro!
                       {/* Neon lime-green hand-painted brush underline */}
                       <svg className="absolute -bottom-2 sm:-bottom-3 left-0 w-full h-4 sm:h-5 pointer-events-none" viewBox="0 0 260 16" fill="none" preserveAspectRatio="none">
@@ -269,7 +345,7 @@
                   </h1>
 
                   {/* Subtitles */}
-                  <h2 className="text-base sm:text-lg md:text-xl font-bold text-neutral-950 tracking-tight mb-2 font-['Outfit']">
+                  <h2 className="text-base sm:text-lg md:text-xl font-bold text-neutral-950 tracking-tight mb-2 font-['Outfit'] cursor-pointer hero-hover-wiggle">
                     Digital growth, built with craft & clarity.
                   </h2>
                   <p className="text-neutral-500 text-sm sm:text-base leading-relaxed max-w-lg mb-8 font-normal">
@@ -349,7 +425,7 @@
             <div className="max-w-7xl mx-auto">
               <div className="bg-white rounded-2xl border border-neutral-200/80 shadow-xs py-4 sm:py-5 px-3 sm:px-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 md:gap-0 md:divide-x md:divide-neutral-200">
                 {stats.map((s, i) => (
-                  <div key={i} className="flex items-center gap-3 px-2 sm:px-4 py-2">
+                  <div key={i} className={`flex items-center gap-3 px-2 sm:px-4 py-2 ${i === 4 ? 'col-span-2 sm:col-span-1 justify-center sm:justify-start' : ''}`}>
                     <div className="w-9 h-9 rounded-xl bg-neutral-100 flex items-center justify-center text-base shrink-0">
                       {s.icon}
                     </div>
@@ -1393,5 +1469,7 @@
       const root = ReactDOM.createRoot(document.getElementById('root'));
       root.render(<App />);
     </script>
+      <!-- Digeetro Interactive Text Click Effects -->
+    <script src="assets/text-click-effects.js"></script>
   </body>
 </html>
